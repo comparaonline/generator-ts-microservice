@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Ezequiel Rabinovich",
+      "authorEmail": "erabinovich@gmail.com",
+      "authorUrl": "https://github.com/warseph"
+    }
+  }
+}
