@@ -42,6 +42,7 @@ module.exports = class extends Generator {
       name: this.props.name,
       githubAccount: 'comparaonline'
     });
+    this.composeWith(require.resolve('generator-node/generators/editorconfig'))
   }
 
   writing() {
