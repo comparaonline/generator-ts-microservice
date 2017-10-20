@@ -1,6 +1,7 @@
 'use strict';
 const path = require('path');
 const chalk = require('chalk');
+const mkdirp = require('mkdirp');
 const Generator = require('yeoman-generator');
 const yosay = require('yosay');
 
@@ -29,27 +30,20 @@ module.exports = class extends Generator {
         `Your microservice must be inside a folder named ${this.props.name}\n` +
         "I'll automatically create this folder."
       );
-      mkdirp(this.props.name);
+      mkdirp.sync(this.props.name);
       this.destinationRoot(this.destinationPath(this.props.name));
     }
-    this.composeWith(require.resolve('../node'), {
-      name: this.props.name
-    });
+    this.composeWith(require.resolve('../node'), { name: this.props.name });
     this.composeWith(require.resolve('../eslint'));
     this.composeWith(require.resolve('../jest'));
     this.composeWith(require.resolve('../nodemon'));
+    this.composeWith(require.resolve('../typescript'));
+    this.composeWith(require.resolve('../server'), { name: this.props.name });
+    this.composeWith(require.resolve('generator-node/generators/editorconfig'))
     this.composeWith(require.resolve('generator-node/generators/git'), {
       name: this.props.name,
       githubAccount: 'comparaonline'
     });
-    this.composeWith(require.resolve('generator-node/generators/editorconfig'))
-  }
-
-  writing() {
-    // this.fs.copy(
-    //   this.templatePath('dummyfile.txt'),
-    //   this.destinationPath('dummyfile.txt')
-    // );
   }
 
   install() {
