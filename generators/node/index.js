@@ -85,10 +85,6 @@ module.exports = class extends Generator {
       name: this.options.name,
       version: '1.0.0',
       description: this.props.description,
-      repository: {
-        type: 'git',
-        url: `git@github.com:comparaonline/${this.options.name}.git`
-      },
       main: 'index.js',
       private: this.props.private,
       scripts: {

@@ -38,6 +38,10 @@ module.exports = class extends Generator {
     this.composeWith(require.resolve('../eslint'));
     this.composeWith(require.resolve('../jest'));
     this.composeWith(require.resolve('../nodemon'));
+    this.composeWith(require.resolve('generator-node/generators/git'), {
+      name: this.props.name,
+      githubAccount: 'comparaonline'
+    });
   }
 
   writing() {

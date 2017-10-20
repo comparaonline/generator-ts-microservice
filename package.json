@@ -20,15 +20,15 @@
     "yeoman-generator"
   ],
   "devDependencies": {
+    "eslint": "^4.1.0",
     "eslint-config-prettier": "^2.4.0",
     "eslint-config-xo": "^0.18.2",
     "eslint-plugin-prettier": "^2.2.0",
-    "eslint": "^4.1.0",
     "generator-node": "^2.3.0",
     "husky": "^0.14.3",
     "inquirer-npm-name": "^2.0.0",
-    "jest-cli": "^21.0.0",
     "jest": "^21.0.0",
+    "jest-cli": "^21.0.0",
     "lint-staged": "^4.2.1",
     "lodash": "^4.17.4",
     "mkdirp": "^0.5.1",
