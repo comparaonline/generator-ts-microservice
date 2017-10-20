@@ -21,7 +21,9 @@ module.exports = class extends Generator {
     this.props = {
       name: this.pkg.name,
       description: this.pkg.description,
-      version: this.pkg.version
+      version: this.pkg.version,
+      keywords: this.pkg.keywords,
+      private: this.pkg.private
     };
 
     if (_.isObject(this.pkg.author)) {
@@ -60,7 +62,7 @@ module.exports = class extends Generator {
       {
         name: 'keywords',
         message: 'Package keywords (comma to split)',
-        when: !this.pkg.keywords,
+        when: !this.props.keywords,
         filter(words) {
           return words.split(/\s*,\s*/g);
         }
@@ -69,6 +71,7 @@ module.exports = class extends Generator {
         name: 'private',
         type: 'confirm',
         message: 'Is this package private?',
+        when: this.props.private === undefined,
         default: true
       }
     ];
@@ -83,13 +86,12 @@ module.exports = class extends Generator {
 
     const pkg = extend({
       name: this.options.name,
-      version: '1.0.0',
+      version: this.props.version || '1.0.0',
       description: this.props.description,
+      keywords: this.props.keywords,
       main: 'index.js',
       private: this.props.private,
-      scripts: {
-        start: 'node .'
-      },
+      scripts: {},
       author: {
         name: this.props.authorName,
         email: this.props.authorEmail,
