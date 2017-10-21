@@ -1,0 +1,13 @@
+version: "3.3"
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        ENVIRONMENT: development
+    volumes:
+      - ".:/code"
+    ports:
+      - "3000:3000"
+    command: "npm run watch"
