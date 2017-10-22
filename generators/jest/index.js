@@ -9,7 +9,8 @@ module.exports = class extends Generator {
 
     const pkg = extend({
       scripts: {
-        test: 'jest'
+        test: 'jest',
+        coverage: 'jest --mapCoverage --coverage --coverageReporters html'
       },
       jest: {
         moduleFileExtensions: [
