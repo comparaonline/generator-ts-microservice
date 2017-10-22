@@ -5,22 +5,16 @@ const Generator = require('yeoman-generator');
 
 module.exports = class extends Generator {
   writing() {
+    this.fs.copy(
+      this.templatePath('tslint.json'),
+      this.destinationPath('tslint.json')
+    );
     const currentPkg = this.fs.readJSON(this.destinationPath('package.json'), {});
 
     const pkg = extend({
       scripts: {
-        test: 'jest'
-      },
-      jest: {
-        moduleFileExtensions: [
-          'ts',
-          'tsx',
-          'js'
-        ],
-        transform: {
-          '\\.(ts|tsx)$': '<rootDir>/node_modules/ts-jest/preprocessor.js'
-        },
-        testRegex: '/__tests__/.*\\.test.(ts|tsx|js)$'
+        tslint: 'tslint -c tslint.json -p tsconfig.json',
+        pretest: 'npm run tslint',
       }
     }, currentPkg);
 
@@ -29,7 +23,7 @@ module.exports = class extends Generator {
 
   install() {
     this.npmInstall([
-      'jest', '@types/jest'
+      'tslint', 'tslint-config-airbnb'
     ], { 'save-dev': true });
   }
 };

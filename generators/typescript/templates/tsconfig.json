@@ -1,10 +1,22 @@
 {
   "compilerOptions": {
     "outDir": "./build",
-    "allowJs": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "lib": [
+      "es2015"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "removeComments": false,
+    "sourceMap": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "strictNullChecks": true,
     "target": "es5"
   },
   "include": [
-    "./src/**/*"
+    "./src/**/*.ts",
+    "./src/**/*.tsx"
   ]
 }

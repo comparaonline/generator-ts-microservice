@@ -12,7 +12,7 @@ WORKDIR /code
 COPY package.json package-lock.json ./
 RUN npm install
 
-COPY . /code
+COPY build /code/build
 
 CMD ["npm", "start"]
 

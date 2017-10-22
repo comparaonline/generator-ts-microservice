@@ -34,7 +34,7 @@ module.exports = class extends Generator {
       this.destinationRoot(this.destinationPath(this.props.name));
     }
     this.composeWith(require.resolve('../node'), { name: this.props.name });
-    this.composeWith(require.resolve('../eslint'));
+    this.composeWith(require.resolve('../tslint'));
     this.composeWith(require.resolve('../jest'));
     this.composeWith(require.resolve('../nodemon'));
     this.composeWith(require.resolve('../typescript'));
