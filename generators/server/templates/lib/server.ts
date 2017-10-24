@@ -1,6 +1,8 @@
 import * as Hapi from 'hapi';
 import * as hapiAlive from 'hapi-alive';
 
+const PREFIX = '<%= microserviceName %>'
+
 export default <T>(host: string, port: number,
   plugins: Array<Hapi.PluginRegistrationObject<T>> = []) => {
   const server = new Hapi.Server();
@@ -8,7 +10,7 @@ export default <T>(host: string, port: number,
   server.register({
     register: hapiAlive,
     routes: {
-      prefix: '/<%= microserviceName %>'
+      prefix: `/${PREFIX}`
     },
     options: {
       path: '/healthcheck',
@@ -27,10 +29,10 @@ export default <T>(host: string, port: number,
   plugins.forEach(plugin => server.register(<any>{
     register: plugin,
     routes: {
-      prefix: '/<%= microserviceName %>'
+      prefix: `/${PREFIX}`
     }
   }));
   return server.start()
     .then(() => server.info ? server.info.uri : '')
-    .then(uri => console.log(`Listening at: ${uri}/<%= microserviceName %>`));
+    .then(uri => console.log(`Listening at: ${uri}/${PREFIX}`));
 };
