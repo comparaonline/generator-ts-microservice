@@ -9,7 +9,7 @@ module.exports = class extends Generator {
     mkdirp('src');
     mkdirp('build');
     this.fs.copy(
-      this.templatePath('build/.gitignore'),
+      this.templatePath('gitignore'),
       this.destinationPath('build/.gitignore')
     );
     this.fs.copy(
