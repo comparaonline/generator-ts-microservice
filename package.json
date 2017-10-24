@@ -49,6 +49,5 @@
     "prepublish": "nsp check",
     "test": "jest"
   },
-  "repository": "comparaonline/generator-co-microservice",
-  "private": true
+  "repository": "comparaonline/generator-co-microservice"
 }
