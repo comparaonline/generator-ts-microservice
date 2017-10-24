@@ -7,9 +7,10 @@ const Generator = require('yeoman-generator');
 module.exports = class extends Generator {
   writing() {
     mkdirp('src');
+    mkdirp('build');
     this.fs.copy(
-      this.templatePath('build'),
-      this.destinationPath('build')
+      this.templatePath('build/.gitignore'),
+      this.destinationPath('build/.gitignore')
     );
     this.fs.copy(
       this.templatePath('tsconfig.json'),
