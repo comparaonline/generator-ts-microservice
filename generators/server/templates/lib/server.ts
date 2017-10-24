@@ -1,13 +1,14 @@
 import * as Hapi from 'hapi';
 import * as hapiAlive from 'hapi-alive';
 
-export default (host: string, port: number): Promise<void> => {
+export default <T>(host: string, port: number,
+  plugins: Array<Hapi.PluginRegistrationObject<T>> = []) => {
   const server = new Hapi.Server();
   server.connection({ host, port });
   server.register({
     register: hapiAlive,
     routes: {
-      prefix: '/<%= microserviceName %>',
+      prefix: '/<%= microserviceName %>'
     },
     options: {
       path: '/healthcheck',
@@ -20,9 +21,16 @@ export default (host: string, port: number): Promise<void> => {
           statusCode: 400
         }
       },
-      healthCheck: (_server: Hapi.Server, callback: Function) => callback()
+      healthCheck: (server: Hapi.Server, callback: Function) => callback()
     }
   });
+  plugins.forEach(plugin => server.register(<any>{
+    register: plugin,
+    routes: {
+      prefix: '/<%= microserviceName %>'
+    }
+  }));
   return server.start()
-    .then(() => console.log(`Listening at: ${server.info.uri}/<%= microserviceName %>`));
+    .then(() => server.info ? server.info.uri : '')
+    .then(uri => console.log(`Listening at: ${uri}/<%= microserviceName %>`));
 };
