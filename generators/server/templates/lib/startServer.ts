@@ -1,10 +1,10 @@
 import * as Hapi from 'hapi';
 import * as hapiAlive from 'hapi-alive';
 
-const PREFIX = '<%= microserviceName %>'
+const PREFIX = '<%= microserviceName %>';
 
 export default <T>(host: string, port: number,
-  plugins: Array<Hapi.PluginRegistrationObject<T>> = []) => {
+                   plugins: Hapi.PluginRegistrationObject<T>[] = []) => {
   const server = new Hapi.Server();
   server.connection({ host, port });
   server.register({
