@@ -8,10 +8,7 @@
         "singleline": "never"
       }
     ],
-    "array-type": [
-      true,
-      "array-simple"
-    ],
+    "array-type": false,
     "strict-boolean-expressions": false
   }
 }
