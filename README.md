@@ -22,10 +22,19 @@ yo co-microservice
  * Yeoman is a person with feelings and opinions, but is very easy to work with.
  * Yeoman can be too opinionated at times but is easily convinced not to be.
  * Feel free to [learn more about Yeoman](http://yeoman.io/).
+ 
+## Troubleshooting
+
+ * If you get: 
+ ```
+ Error: EACCES: permission denied, open '/Users/currentUser/.config/configstore/insight-yo.json.923972600'
+ ```
+
+ Run `sudo chown -R $(whoami) ~/.config`
 
 ## License
 
- © [Ezequiel Rabinovich]()
+ © [ComparaOnline]()
 
 
 [npm-image]: https://badge.fury.io/js/generator-co-microservice.svg
