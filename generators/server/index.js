@@ -23,8 +23,8 @@ module.exports = class extends Generator {
     mkdirp.sync('src/lib');
 
     this.fs.copyTpl(
-      this.templatePath('lib/server.ts'),
-      this.destinationPath('src/lib/server.ts'),
+      this.templatePath('lib/startServer.ts'),
+      this.destinationPath('src/lib/startServer.ts'),
       {
         microserviceName: this.options.name
       }
