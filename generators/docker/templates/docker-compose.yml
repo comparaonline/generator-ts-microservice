@@ -10,4 +10,4 @@ services:
       - ".:/code"
     ports:
       - "3000:3000"
-    command: "npm run watch"
+    command: "yarn watch"

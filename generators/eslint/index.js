@@ -14,7 +14,7 @@ module.exports = class extends Generator {
     const pkg = extend({
       scripts: {
         eslint: 'eslint "**/*.js"',
-        pretest: 'npm run eslint',
+        pretest: 'yarn eslint',
       }
     }, currentPkg);
 
@@ -22,8 +22,8 @@ module.exports = class extends Generator {
   }
 
   install() {
-    this.npmInstall([
+    this.yarnInstall([
       'eslint', 'eslint-config-airbnb-base', 'eslint-plugin-import'
-    ], { 'save-dev': true });
+    ], { 'dev': true });
   }
 };

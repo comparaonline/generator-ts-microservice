@@ -29,8 +29,8 @@ module.exports = class extends Generator {
   }
 
   install() {
-    this.npmInstall([
+    this.yarnInstall([
       'jest', '@types/jest', 'ts-jest'
-    ], { 'save-dev': true });
+    ], { 'dev': true });
   }
 };

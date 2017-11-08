@@ -32,7 +32,7 @@ module.exports = class extends Generator {
   }
 
   install() {
-    this.npmInstall(['hapi', 'hapi-alive']);
-    this.npmInstall(['@types/hapi'], { 'save-dev': true });
+    this.yarnInstall(['hapi', 'hapi-alive']);
+    this.yarnInstall(['@types/hapi'], { 'dev': true });
   }
 };

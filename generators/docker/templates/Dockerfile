@@ -9,11 +9,11 @@ ENV HOST=0.0.0.0
 
 WORKDIR /code
 
-COPY package.json package-lock.json ./
-RUN npm install
+COPY package.json yarn.lock ./
+RUN yarn install
 
 COPY build /code/build
 
-CMD ["npm", "start"]
+CMD ["yarn", "start"]
 
 EXPOSE 3000
