@@ -23,7 +23,7 @@ module.exports = class extends Generator {
       scripts: {
         compile: 'tsc --outDir ./build',
         start: 'node ./build',
-        watch: 'nodemon -e ts -w ./src -x npm run watch:serve',
+        watch: 'nodemon -e ts -w ./src -x yarn watch:serve',
         'watch:serve': 'ts-node --inspect src/index.ts'
       }
     }, currentPkg);
@@ -32,6 +32,6 @@ module.exports = class extends Generator {
   }
 
   install() {
-    this.npmInstall(['typescript', 'ts-node'], { 'save-dev': true });
+    this.yarnInstall(['typescript', 'ts-node'], { 'dev': true });
   }
 };

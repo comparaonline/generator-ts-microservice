@@ -14,7 +14,7 @@ module.exports = class extends Generator {
     const pkg = extend({
       scripts: {
         tslint: 'tslint -c tslint.json -p tsconfig.json',
-        pretest: 'npm run tslint',
+        pretest: 'yarn tslint',
       }
     }, currentPkg);
 
@@ -22,8 +22,8 @@ module.exports = class extends Generator {
   }
 
   install() {
-    this.npmInstall([
+    this.yarnInstall([
       'tslint', 'tslint-config-airbnb'
-    ], { 'save-dev': true });
+    ], { 'dev': true });
   }
 };
