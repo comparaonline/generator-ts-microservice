@@ -21,7 +21,7 @@ module.exports = class extends Generator {
         transform: {
           '\\.(ts|tsx)$': '<rootDir>/node_modules/ts-jest/preprocessor.js'
         },
-        testRegex: '/__tests__/.*\\.test.(ts|tsx|js)$'
+        testRegex: 'src(/.*)?/__tests__/.*\\.(ts|tsx|js)$'
       }
     }, currentPkg);
 

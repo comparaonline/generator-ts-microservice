@@ -22,6 +22,7 @@ module.exports = class extends Generator {
     const pkg = extend({
       scripts: {
         compile: 'tsc --outDir ./build',
+        clean: 'rm -rf build/*',
         start: 'node ./build',
         watch: 'nodemon -e ts -w ./src -x yarn watch:serve',
         'watch:serve': 'ts-node --inspect src/index.ts'
