@@ -38,6 +38,7 @@ module.exports = class extends Generator {
     this.composeWith(require.resolve('../jest'));
     this.composeWith(require.resolve('../nodemon'));
     this.composeWith(require.resolve('../typescript'));
+    this.composeWith(require.resolve('../node-config'));
     this.composeWith(require.resolve('../server'), { name: this.props.name });
     this.composeWith(require.resolve('../docker'), { name: this.props.name });
     this.composeWith(require.resolve('generator-node/generators/editorconfig'))
