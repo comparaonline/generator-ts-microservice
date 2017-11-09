@@ -16,5 +16,6 @@ module.exports = class extends Generator {
 
   install() {
     this.yarnInstall([ 'config' ]);
+    this.yarnInstall([ '@types/config' ], { dev: true });
   }
 };
