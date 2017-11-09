@@ -3,11 +3,16 @@
 
 ## Installation
 
+You need `yarn` to use this repo!! before starting please install it if you don't have it:
+```bash
+npm install -g yarn
+```
+
 First, install [Yeoman](http://yeoman.io) and generator-co-microservice using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
 
 ```bash
-npm install -g yo
-npm install -g generator-co-microservice
+yarn global add yo
+yarn global add generator-co-microservice
 ```
 
 Then generate your new project:
