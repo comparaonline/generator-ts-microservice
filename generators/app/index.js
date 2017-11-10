@@ -20,11 +20,13 @@ module.exports = class extends Generator {
       filter: name => name.toLowerCase().replace(/\s+|_/, '-')
     }, this).then(props => {
       this.props.name = props.name;
-    });
-
+      });
   }
 
   default() {
+    this.props.githubAccount = 'comparaonline';
+    this.props.keywords = 'comparaonline, microservice'
+
     if (path.basename(this.destinationPath()) !== this.props.name) {
       this.log(
         `Your microservice must be inside a folder named ${this.props.name}\n` +
@@ -33,19 +35,21 @@ module.exports = class extends Generator {
       mkdirp.sync(this.props.name);
       this.destinationRoot(this.destinationPath(this.props.name));
     }
-    this.composeWith(require.resolve('../node'), { name: this.props.name });
-    this.composeWith(require.resolve('../tslint'));
-    this.composeWith(require.resolve('../jest'));
-    this.composeWith(require.resolve('../nodemon'));
-    this.composeWith(require.resolve('../typescript'));
-    this.composeWith(require.resolve('../node-config'), { name: this.props.name });
-    this.composeWith(require.resolve('../server-express'), { name: this.props.name });
-    this.composeWith(require.resolve('../docker'), { name: this.props.name });
-    this.composeWith(require.resolve('generator-node/generators/editorconfig'))
-    this.composeWith(require.resolve('generator-node/generators/git'), {
-      name: this.props.name,
-      githubAccount: 'comparaonline'
-    });
+    const dependencies = [
+      '../node',
+      '../jest',
+      '../nodemon',
+      '../typescript',
+      '../tslint',
+      '../node-config',
+      '../server-express',
+      '../docker',
+      'generator-node/generators/editorconfig',
+      'generator-node/generators/git'
+    ];
+    dependencies
+      .map(require.resolve)
+      .forEach(dependency => this.composeWith(dependency, this.props));
   }
 
   install() {
