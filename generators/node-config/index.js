@@ -24,6 +24,10 @@ module.exports = class extends Generator {
         microserviceName: this.options.name
       }
     ));
+    this.fs.copy(
+      this.templatePath('gitignore'),
+      this.destinationPath('config/.gitignore')
+    )
   }
 
   install() {

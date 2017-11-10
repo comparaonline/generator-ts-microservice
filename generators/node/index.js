@@ -12,6 +12,11 @@ module.exports = class extends Generator {
       required: true,
       desc: 'Project name'
     });
+    this.option('keywords', {
+      type: String,
+      required: false,
+      desc: 'Project keywords'
+    });
   }
 
   initializing() {
@@ -36,6 +41,8 @@ module.exports = class extends Generator {
       this.props.authorEmail = info.email;
       this.props.authorUrl = info.url;
     }
+
+    this.props = extend(this.props, this.options);
   }
 
   prompting() {
