@@ -21,6 +21,12 @@ module.exports = class extends Generator {
   }
 
   end() {
-    return this.spawnCommand('yarn', ['sequelize', 'init'])
+    return this.spawnCommand('yarn', [
+      'sequelize',
+      'init',
+      '--models-path', 'src/models',
+      '--seeders-path', 'src/seeders',
+      '--migrations-path', 'src/migrations'
+    ])
   }
 };
