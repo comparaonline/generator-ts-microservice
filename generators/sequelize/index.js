@@ -19,6 +19,15 @@ module.exports = class extends YamlGenerator {
     this.extendYaml(
       this.destinationPath('docker-compose.yml'),
       this.templatePath('docker-compose.yml'),
+      {
+        services: {
+          postgres: {
+            environment: {
+              POSTGRES_DB: this.options.name
+            }
+          }
+        }
+      }
     );
     this._extendConfig();
 
@@ -81,7 +90,7 @@ module.exports = class extends YamlGenerator {
           username: "user",
           password: "pass",
           database: this.options.name,
-          host: "postgresql",
+          host: "postgres",
           dialect: "postgresql"
         }
       },
