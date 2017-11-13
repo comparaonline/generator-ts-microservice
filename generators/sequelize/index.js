@@ -17,16 +17,11 @@ module.exports = class extends Generator {
   }
 
   install() {
-    this.yarnInstall([ 'sequelize', 'sequelize-cli', 'sequelize-typescript' ]);
-  }
-
-  end() {
+    this.yarnInstall(['sequelize', 'sequelize-cli', 'sequelize-typescript']);
     return this.spawnCommand('yarn', [
       'sequelize',
       'init',
-      '--models-path', 'src/models',
-      '--seeders-path', 'src/seeders',
-      '--migrations-path', 'src/migrations'
-    ])
+      '--seeders-path', 'src/seeders'
+    ]);
   }
 };
