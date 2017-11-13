@@ -32,8 +32,8 @@ module.exports = class extends YamlGenerator {
     this._extendConfig();
 
     this.fs.copy(
-      this.templatePath('bin'),
-      this.destinationPath('bin')
+      this.templatePath('sequelizerc'),
+      this.destinationPath('.sequelizerc')
     );
     mkdirp.sync('migrations');
     mkdirp.sync('src/seeders');
@@ -75,7 +75,7 @@ module.exports = class extends YamlGenerator {
 
     const pkg = extend({
       scripts: {
-        sequelize: 'sequelize --url $(bin/database-url)',
+        sequelize: 'sequelize',
         prestart: prestart ? `${prestart} && ${migrate}` : migrate,
         prewatch: prewatch ? `${prewatch} && ${migrate}` : migrate
       }
