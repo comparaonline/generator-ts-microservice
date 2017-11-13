@@ -2,7 +2,6 @@
 const _ = require('lodash');
 const extend = _.merge;
 const Generator = require('yeoman-generator');
-const mkdirp = require('mkdirp');
 
 module.exports = class extends Generator {
   constructor(args, options) {

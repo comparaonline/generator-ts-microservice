@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+
+const sequelize = require('config').sequelize;
+const { username, password, database, host, dialect, port = 5432 } = sequelize;
+const url = `${dialect}://${username}:${password}@${host}:${port}/${database}`;
+
+process.stdout.write(url);

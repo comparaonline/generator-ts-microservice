@@ -1,7 +1,7 @@
 'use strict';
-const Generator = require('yeoman-generator');
+const YamlGenerator = require('../../helpers/yaml-generator');
 
-module.exports = class extends Generator {
+module.exports = class extends YamlGenerator {
   constructor(args, options) {
     super(args, options);
     this.option('name', {
@@ -12,9 +12,10 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    this.fs.copy(
-      this.templatePath('docker-compose.yml'),
-      this.destinationPath('docker-compose.yml')
+    const template = this.readYaml(this.templatePath('docker-compose.yml'), {});
+    this.extendYaml(
+      this.destinationPath('docker-compose.yml'),
+      this.templatePath('docker-compose.yml')
     );
 
     this.fs.copy(
