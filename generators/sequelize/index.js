@@ -36,7 +36,7 @@ module.exports = class extends Generator {
     mkdirp.sync('src/initialization');
     this.extendLines(
       this.destinationPath('src/initialization/index.ts'),
-      ["import './ sequelize';"]
+      ["import './sequelize';"]
     );
     this._extendConfig();
 
