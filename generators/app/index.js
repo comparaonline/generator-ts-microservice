@@ -30,7 +30,7 @@ module.exports = class extends Generator {
           {
             name: 'Sequelize ORM',
             value: '../sequelize',
-            checked: this.pkg.dependencies.sequelize !== undefined
+            checked: (this.pkg.dependencies || {}).sequelize !== undefined
           }
         ]
       }
