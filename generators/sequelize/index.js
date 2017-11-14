@@ -2,9 +2,10 @@
 const mkdirp = require('mkdirp');
 const _ = require('lodash');
 const extend = _.merge;
-const YamlGenerator = require('../../helpers/yaml-generator');
+const yamlHelper = require('../../helpers/yaml-helper');
+const Generator = require('yeoman-generator');
 
-module.exports = class extends YamlGenerator {
+module.exports = class extends Generator {
   constructor(args, options) {
     super(args, options);
     this.option('name', {
@@ -12,6 +13,7 @@ module.exports = class extends YamlGenerator {
       required: true,
       desc: 'Project name'
     });
+    yamlHelper(this);
   }
 
   writing() {
