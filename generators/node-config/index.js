@@ -42,7 +42,6 @@ module.exports = class extends Generator {
   }
 
   _loadTemplate(file) {
-    console.log(file);
     const text = this.fs.read(this.templatePath(`${file}.json`), '{}');
     const rendered = ejs.render(text, { microserviceName: this.options.name });
     return JSON.parse(rendered.trim() || '{}');

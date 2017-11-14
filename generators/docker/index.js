@@ -9,6 +9,11 @@ module.exports = class extends YamlGenerator {
       required: true,
       desc: 'Project name'
     });
+    this.option('optionalDependencies', {
+      type: Array,
+      required: false,
+      desc: 'Selected optional dependencies'
+    })
   }
 
   writing() {
@@ -27,8 +32,24 @@ module.exports = class extends YamlGenerator {
       this.templatePath('Dockerfile'),
       this.destinationPath('Dockerfile'),
       {
-        microserviceName: this.options.name
+        microserviceName: this.options.name,
+        additionalParts: this._additionalParts()
       }
     );
+  }
+
+  _additionalParts() {
+    const additionalParts = [];
+    if (this._includeSequelize()) {
+      const sequelize = this.fs.read(this.templatePath('Dockerfile-sequelize'));
+      additionalParts.push(sequelize);
+    }
+    return additionalParts.join('\n')
+  }
+
+  _includeSequelize() {
+    return !!this.options.optionalDependencies
+      .reduce((a, b) => a.concat(b), [])
+      .find(elem => elem.indexOf('sequelize') !== -1) || false;
   }
 };
