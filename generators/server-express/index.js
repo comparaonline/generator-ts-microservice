@@ -27,11 +27,11 @@ module.exports = class extends Generator {
 
     this.fs.copy(
       this.templatePath('routes/index.ts'),
-      this.destinationPath('src/routes/index.ts'),
+      this.destinationPath('src/routes/index.ts')
     );
     this.fs.copy(
       this.templatePath('routes/test.ts'),
-      this.destinationPath('src/routes/test.ts'),
+      this.destinationPath('src/routes/test.ts')
     )
   }
 
