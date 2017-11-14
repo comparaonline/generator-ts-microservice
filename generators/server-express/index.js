@@ -33,6 +33,10 @@ module.exports = class extends Generator {
       this.templatePath('routes/test.ts'),
       this.destinationPath('src/routes/test.ts')
     )
+    this.fs.copy(
+      this.templatePath('initialization'),
+      this.destinationPath('src/initialization')
+    )
   }
 
   install() {
