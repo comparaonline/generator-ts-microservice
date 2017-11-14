@@ -1,7 +1,12 @@
-#!/usr/bin/env node
+const path = require('path');
 
 const sequelize = require('config').sequelize;
 const { username, password, database, host, dialect, port = 5432 } = sequelize;
 const url = `${dialect}://${username}:${password}@${host}:${port}/${database}`;
 
-process.stdout.write(url);
+module.exports = {
+  url,
+  'models-path': path.resolve('src', 'models'),
+  'seeders-path': path.resolve('src', 'seeders'),
+  'migrations-path': path.resolve('migrations')
+};

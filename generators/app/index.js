@@ -10,6 +10,7 @@ const extend = _.merge;
 module.exports = class extends Generator {
   initializing() {
     this.props = {};
+    this.pkg = this.fs.readJSON(this.destinationPath('package.json'), {});
   }
 
   prompting() {
@@ -26,7 +27,11 @@ module.exports = class extends Generator {
         message: 'Select which optional dependencies you need installed',
         type: 'checkbox',
         choices: [
-          {name: 'Sequelize ORM', value: '../sequelize'}
+          {
+            name: 'Sequelize ORM',
+            value: '../sequelize',
+            checked: this.pkg.dependencies.sequelize !== undefined
+          }
         ]
       }
     ];
@@ -37,7 +42,7 @@ module.exports = class extends Generator {
 
   default() {
     this.props.githubAccount = 'comparaonline';
-    this.props.keywords = 'comparaonline, microservice'
+    this.props.keywords = ['comparaonline', 'microservice']
 
     this._checkPath();
     const dependencies = [
