@@ -18,6 +18,9 @@ module.exports = class extends Generator {
           'tsx',
           'js'
         ],
+        setupFiles: [
+          './src/initialization/index.ts'
+        ],
         transform: {
           '\\.(ts|tsx)$': '<rootDir>/node_modules/ts-jest/preprocessor.js'
         },
