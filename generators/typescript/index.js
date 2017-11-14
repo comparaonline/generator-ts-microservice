@@ -33,6 +33,7 @@ module.exports = class extends Generator {
   }
 
   install() {
+    this.yarnInstall(['reflect-metadata']);
     this.yarnInstall(['typescript', 'ts-node'], { 'dev': true });
   }
 };

@@ -1,7 +1,8 @@
 'use strict';
-const YamlGenerator = require('../../helpers/yaml-generator');
+const Generator = require('yeoman-generator');
+const yamlHelper = require('../../helpers/yaml-helper');
 
-module.exports = class extends YamlGenerator {
+module.exports = class extends Generator {
   constructor(args, options) {
     super(args, options);
     this.option('name', {
@@ -13,7 +14,8 @@ module.exports = class extends YamlGenerator {
       type: Array,
       required: false,
       desc: 'Selected optional dependencies'
-    })
+    });
+    yamlHelper(this);
   }
 
   writing() {
