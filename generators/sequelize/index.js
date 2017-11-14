@@ -3,6 +3,7 @@ const mkdirp = require('mkdirp');
 const _ = require('lodash');
 const extend = _.merge;
 const yamlHelper = require('../../helpers/yaml-helper');
+const fileHelper = require('../../helpers/file-helper');
 const Generator = require('yeoman-generator');
 
 module.exports = class extends Generator {
@@ -14,6 +15,7 @@ module.exports = class extends Generator {
       desc: 'Project name'
     });
     yamlHelper(this);
+    fileHelper(this);
   }
 
   writing() {
@@ -31,7 +33,16 @@ module.exports = class extends Generator {
         }
       }
     );
+    this.extendLines(
+      this.destinationPath('src/initialization/index.ts'),
+      ["import './ sequelize';"]
+    );
     this._extendConfig();
+
+    this.fs.copy(
+      this.templatePath('sequelize.ts'),
+      this.destinationPath('src/initialization/sequelize.ts')
+    );
 
     this.fs.copy(
       this.templatePath('sequelizerc'),
