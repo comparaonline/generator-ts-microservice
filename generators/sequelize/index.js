@@ -41,6 +41,11 @@ module.exports = class extends Generator {
     this._extendConfig();
 
     this.fs.copy(
+      this.templatePath('bin'),
+      this.destinationPath('bin')
+    );
+
+    this.fs.copy(
       this.templatePath('sequelize.ts'),
       this.destinationPath('src/initialization/sequelize.ts')
     );
@@ -85,10 +90,12 @@ module.exports = class extends Generator {
     const currentPkg = this.fs.readJSON(this.destinationPath('package.json'), {});
     const prestart = currentPkg.scripts.prestart;
     const prewatch = currentPkg.scripts.prewatch;
-    const migrate = 'yarn sequelize db:migrate';
+    const migrate = 'yarn migrate';
 
     const pkg = extend({
       scripts: {
+        migrate: 'sequelize db:migrate',
+        premigrate: 'bin/createdb',
         sequelize: 'sequelize',
         prestart: prestart ? `${prestart} && ${migrate}` : migrate,
         prewatch: prewatch ? `${prewatch} && ${migrate}` : migrate
