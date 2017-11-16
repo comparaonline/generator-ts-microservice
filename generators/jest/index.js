@@ -29,6 +29,11 @@ module.exports = class extends Generator {
     }, currentPkg);
 
     this.fs.writeJSON(this.destinationPath('package.json'), pkg);
+
+    this.fs.copy(
+      this.templatePath('docker-compose.test.yml'),
+      this.destinationPath('docker-compose.test.yml')
+    )
   }
 
   install() {
