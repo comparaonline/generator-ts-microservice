@@ -33,12 +33,16 @@ module.exports = class extends Generator {
         }
       }
     );
-    mkdirp.sync('src/initialization');
     this.extendLines(
       this.destinationPath('src/initialization/index.ts'),
       ["import './sequelize';"]
     );
     this._extendConfig();
+
+    mkdirp.sync(this.destinationPath('src/initialization'));
+    mkdirp.sync(this.destinationPath('migrations'));
+    mkdirp.sync(this.destinationPath('src/seeders'));
+    mkdirp.sync(this.destinationPath('src/models'));
 
     this.fs.copy(
       this.templatePath('bin'),
@@ -53,13 +57,6 @@ module.exports = class extends Generator {
     this.fs.copy(
       this.templatePath('sequelizerc'),
       this.destinationPath('.sequelizerc')
-    );
-    mkdirp.sync('migrations');
-    mkdirp.sync('src/seeders');
-
-    this.fs.copy(
-      this.templatePath('models'),
-      this.destinationPath('src/models')
     );
 
     this.fs.copy(
