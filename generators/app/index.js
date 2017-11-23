@@ -54,6 +54,7 @@ module.exports = class extends Generator {
       '../node-config',
       '../server-express',
       '../docker',
+      '../kubernetes',
       'generator-node/generators/editorconfig',
       'generator-node/generators/git'
     ];
