@@ -13,6 +13,7 @@ module.exports = (object) => {
 
   object.saveLines = function (filePath, lines) {
     const text = lines
+      .filter(line => typeof line === 'string')
       .filter(line => line.trim() !== '')
       .concat([''])
       .join('\n');
