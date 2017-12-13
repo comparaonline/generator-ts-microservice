@@ -10,9 +10,15 @@ module.exports = class extends Generator {
     const pkg = extend({
       scripts: {
         test: 'jest',
-        coverage: 'jest --mapCoverage --coverage --coverageReporters html'
+        coverage: 'jest --coverage --coverageReporters html'
       },
       jest: {
+        mapCoverage: true,
+        collectCoverageFrom: [
+          'src/**/*.{ts?(x),js?(x)}',
+          '!src/**/*.d.ts',
+          '!src/**/__tests__/**/*.*'
+        ],
         moduleFileExtensions: [
           'ts',
           'tsx',
@@ -24,7 +30,7 @@ module.exports = class extends Generator {
         transform: {
           '\\.(ts|tsx)$': '<rootDir>/node_modules/ts-jest/preprocessor.js'
         },
-        testRegex: 'src(/.*)?/__tests__/.*\\.(ts|tsx|js)$'
+        testRegex: 'src(/.*)?/__tests__/[^/]*\\.(ts|tsx|js)$'
       }
     }, currentPkg);
 
