@@ -27,7 +27,6 @@ process.on('SIGTERM', () => {
   shutdown();
 });
 
-// shut down server
 function shutdown() {
   server.close((err) => {
     if (err) {
