@@ -1,1 +1,2 @@
-COPY migrations .sequelizerc ./
+COPY .sequelizerc ./
+COPY migrations/ ./migrations
