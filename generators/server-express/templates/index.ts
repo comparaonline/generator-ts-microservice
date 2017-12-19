@@ -7,4 +7,33 @@ import './initialization';
 const app = express();
 app.use(logger(config.get('server.logFormat')));
 app.use(config.get('server.baseUrl'), routes);
-app.listen(config.get('server.port'), () => console.log(`<%= microserviceName %> is up!`));
+
+const server = app.listen(
+  config.get('server.port'), () => console.log(`<%= microserviceName %> is up!`)
+);
+
+// Graceful shutdown. Based on:
+// https://github.com/RisingStack/kubernetes-graceful-shutdown-example/blob/master/src/index.js
+
+// quit on ctrl-c when running docker in terminal
+process.on('SIGINT', () => {
+  console.info('Got SIGINT. Graceful shutdown ', new Date().toISOString());
+  shutdown();
+});
+
+// quit properly on docker stop
+process.on('SIGTERM', () => {
+  console.info('Got SIGTERM. Graceful shutdown ', new Date().toISOString());
+  shutdown();
+});
+
+// shut down server
+function shutdown() {
+  server.close((err) => {
+    if (err) {
+      console.error(err);
+      process.exitCode = 1;
+    }
+    process.exit();
+  });
+}
