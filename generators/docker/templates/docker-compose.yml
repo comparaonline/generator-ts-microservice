@@ -10,6 +10,8 @@ services:
       - NODE_ENV=development
     volumes:
       - ".:/code"
+      # mount modules from image
+      - "/code/node_modules"
     ports:
       - "4000:4000"
     command: "yarn watch"
