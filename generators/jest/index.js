@@ -13,6 +13,7 @@ module.exports = class extends Generator {
         coverage: 'jest --coverage --coverageReporters html'
       },
       jest: {
+        forceExit: true,
         mapCoverage: true,
         collectCoverageFrom: [
           'src/**/*.{ts?(x),js?(x)}',
