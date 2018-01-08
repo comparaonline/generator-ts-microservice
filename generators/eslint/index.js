@@ -4,6 +4,9 @@ const extend = _.merge;
 const Generator = require('yeoman-generator');
 
 module.exports = class extends Generator {
+  static get devDependencies() {
+    return ['eslint', 'eslint-config-airbnb-base', 'eslint-plugin-import'];
+  }
   writing() {
     this.fs.copy(
       this.templatePath('.eslintrc'),
@@ -19,11 +22,5 @@ module.exports = class extends Generator {
     }, currentPkg);
 
     this.fs.writeJSON(this.destinationPath('package.json'), pkg);
-  }
-
-  install() {
-    this.yarnInstall([
-      'eslint', 'eslint-config-airbnb-base', 'eslint-plugin-import'
-    ], { 'dev': true });
   }
 };

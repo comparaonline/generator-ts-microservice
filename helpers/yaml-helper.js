@@ -40,7 +40,7 @@ module.exports = (object) => {
       this.readYaml(originalPath, {}) : originalPath;
     const newYaml = typeof newPath === 'string' ?
       this.readYaml(newPath, {}) : newPath;
-    const extendedYaml = extend(newYaml, additionalYaml, originalYaml);
+    const extendedYaml = extend(originalYaml, newYaml, additionalYaml);
     this.writeYaml(originalPath, extendedYaml);
   };
 };

@@ -35,23 +35,34 @@ module.exports = class extends Generator {
       this.destinationPath('Dockerfile'),
       {
         microserviceName: this.options.name,
-        additionalParts: this._additionalParts()
+        additionalParts: this._additionalParts(),
+        additionalDependencies: this._additionalDependencies()
       }
     );
   }
 
   _additionalParts() {
     const additionalParts = [];
-    if (this._includeSequelize()) {
+    if (this._hasDependency('sequelize')) {
       const sequelize = this.fs.read(this.templatePath('Dockerfile-sequelize'));
       additionalParts.push(sequelize);
     }
     return additionalParts.join('\n')
   }
 
-  _includeSequelize() {
+  _additionalDependencies() {
+    const additionalDependencies = [];
+    if (this._hasDependency('event-streamer')) {
+      const kafka = this.fs.read(this.templatePath('Dockerfile-event-streamer'));
+      additionalDependencies.push(kafka);
+    }
+    return additionalDependencies.join('\n');
+  }
+
+  _hasDependency(dependency) {
     return !!this.options.optionalDependencies
       .reduce((a, b) => a.concat(b), [])
-      .find(elem => elem.indexOf('sequelize') !== -1) || false;
+      .find(elem => elem.indexOf(dependency) !== -1) || false;
   }
+
 };

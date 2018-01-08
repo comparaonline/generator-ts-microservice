@@ -7,6 +7,9 @@ const fileHelper = require('../../helpers/file-helper');
 const Generator = require('yeoman-generator');
 
 module.exports = class extends Generator {
+  static get dependencies() {
+    return ['sequelize', 'sequelize-cli', 'sequelize-typescript', 'pg'];
+  }
   constructor(args, options) {
     super(args, options);
     this.option('name', {
@@ -115,9 +118,5 @@ module.exports = class extends Generator {
       this.fs.readJSON(this.destinationPath('config/default.json'), {})
     );
     this.fs.writeJSON(this.destinationPath('config/default.json'), config);
-  }
-
-  install() {
-    this.yarnInstall(['sequelize', 'sequelize-cli', 'sequelize-typescript', 'pg']);
   }
 };

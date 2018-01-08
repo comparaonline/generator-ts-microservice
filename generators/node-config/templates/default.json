@@ -1,4 +1,5 @@
 {
+  "appName": "<%= microserviceName %>",
   "server": {
     "port": 4000,
     "baseUrl": "/<%= microserviceName %>",

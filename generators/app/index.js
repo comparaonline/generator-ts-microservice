@@ -31,6 +31,11 @@ module.exports = class extends Generator {
             name: 'Sequelize ORM',
             value: '../sequelize',
             checked: (this.pkg.dependencies || {}).sequelize !== undefined
+          },
+          {
+            name: 'Event Streamer (Kafka framework)',
+            value: '../event-streamer',
+            checked: (this.pkg.dependencies || {})['event-streamer'] !== undefined
           }
         ]
       }
@@ -47,6 +52,7 @@ module.exports = class extends Generator {
     this._checkPath();
     const dependencies = [
       '../node',
+      '../base-structure',
       '../jest',
       '../nodemon',
       '../typescript',
@@ -59,9 +65,10 @@ module.exports = class extends Generator {
       'generator-node/generators/editorconfig',
       'generator-node/generators/git'
     ];
-    dependencies
+    this.props.dependencies = dependencies
       .concat(this.props.optionalDependencies)
-      .map(require.resolve)
+      .map(require.resolve);
+    this.props.dependencies
       .forEach(dependency => this.composeWith(dependency, this.props));
   }
 
@@ -77,6 +84,18 @@ module.exports = class extends Generator {
   }
 
   install() {
-    this.yarnInstall();
+    const modules = this.props.dependencies
+      .map(require);
+    const dependencies = modules
+      .filter(dep => dep.dependencies)
+      .map(dep => dep.dependencies)
+      .reduce((a, b) => a.concat(b), []);
+
+    const devDependencies = modules
+      .filter(dep => dep.devDependencies)
+      .map(dep => dep.devDependencies)
+      .reduce((a, b) => a.concat(b), []);
+    this.yarnInstall(dependencies);
+    this.yarnInstall(devDependencies, {dev: true});
   }
 };
