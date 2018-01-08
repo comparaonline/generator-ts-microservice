@@ -59,14 +59,14 @@ module.exports = class extends Generator {
             "group.id": this.options.name,
             "metadata.broker.list": "kafka:9092"
           },
-          "producerTopic": "collections",
+          "producerTopic": "kafka_topic",
           "consumer": {
             "group.id": this.options.name,
             "metadata.broker.list": "kafka:9092"
           },
           "consumerTopicConfiguration": {},
           "consumerTopics": [
-            "collections"
+            "kafka_topic"
           ]
         }
       },
