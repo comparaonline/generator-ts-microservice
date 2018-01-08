@@ -6,6 +6,14 @@ const extend = _.merge;
 const Generator = require('yeoman-generator');
 
 module.exports = class extends Generator {
+  static get dependencies() {
+    return ['config'];
+  }
+
+  static get devDependencies() {
+    return ['@types/config'];
+  }
+
   constructor(args, options) {
     super(args, options);
     this.option('name', {
@@ -45,10 +53,5 @@ module.exports = class extends Generator {
     const text = this.fs.read(this.templatePath(`${file}.json`), '{}');
     const rendered = ejs.render(text, { microserviceName: this.options.name });
     return JSON.parse(rendered.trim() || '{}');
-  }
-
-  install() {
-    this.yarnInstall([ 'config' ]);
-    this.yarnInstall([ '@types/config' ], { dev: true });
   }
 };

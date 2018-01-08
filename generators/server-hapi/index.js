@@ -5,6 +5,14 @@ const mkdirp = require('mkdirp');
 const extend = _.merge;
 
 module.exports = class extends Generator {
+  static get dependencies() {
+    return ['hapi', 'hapi-alive'];
+  }
+
+  static get devDependencies() {
+    return ['@types/hapi'];
+  }
+
   constructor(args, options) {
     super(args, options);
     this.option('name', {
@@ -29,10 +37,5 @@ module.exports = class extends Generator {
         microserviceName: this.options.name
       }
     );
-  }
-
-  install() {
-    this.yarnInstall(['hapi', 'hapi-alive']);
-    this.yarnInstall(['@types/hapi'], { 'dev': true });
   }
 };

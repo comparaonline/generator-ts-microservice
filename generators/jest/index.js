@@ -4,6 +4,9 @@ const extend = _.merge;
 const Generator = require('yeoman-generator');
 
 module.exports = class extends Generator {
+  static get devDependencies() {
+    return ['jest', '@types/jest', 'ts-jest'];
+  }
   writing() {
     const currentPkg = this.fs.readJSON(this.destinationPath('package.json'), {});
 
@@ -41,11 +44,5 @@ module.exports = class extends Generator {
       this.templatePath('docker-compose.test.yml'),
       this.destinationPath('docker-compose.test.yml')
     )
-  }
-
-  install() {
-    this.yarnInstall([
-      'jest', '@types/jest', 'ts-jest'
-    ], { 'dev': true });
   }
 };

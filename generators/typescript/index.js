@@ -5,6 +5,14 @@ const mkdirp = require('mkdirp');
 const Generator = require('yeoman-generator');
 
 module.exports = class extends Generator {
+  static get dependencies() {
+    return ['reflect-metadata'];
+  }
+
+  static get devDependencies() {
+    return ['typescript', 'ts-node'];
+  }
+
   writing() {
     mkdirp('src');
     mkdirp('build');
@@ -30,10 +38,5 @@ module.exports = class extends Generator {
     }, currentPkg);
 
     this.fs.writeJSON(this.destinationPath('package.json'), pkg);
-  }
-
-  install() {
-    this.yarnInstall(['reflect-metadata']);
-    this.yarnInstall(['typescript', 'ts-node'], { 'dev': true });
   }
 };

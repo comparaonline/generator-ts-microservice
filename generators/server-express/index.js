@@ -5,6 +5,17 @@ const mkdirp = require('mkdirp');
 const extend = _.merge;
 
 module.exports = class extends Generator {
+  static get dependencies() {
+    return ['express', 'express-healthcheck', 'morgan'];
+  }
+
+  static get devDependencies() {
+    return ['@types/express', '@types/morgan'];
+  }
+
+  static get registerServer() {
+    return './web-server';
+  }
   constructor(args, options) {
     super(args, options);
     this.option('name', {
@@ -15,32 +26,9 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    this.fs.copyTpl(
-      this.templatePath('index.ts'),
-      this.destinationPath('src/index.ts'),
-      {
-        microserviceName: this.options.name
-      }
+    this.fs.copy(
+      this.templatePath('web-server'),
+      this.destinationPath('src/web-server')
     );
-
-    mkdirp.sync('src/routes');
-
-    this.fs.copy(
-      this.templatePath('routes/index.ts'),
-      this.destinationPath('src/routes/index.ts')
-    );
-    this.fs.copy(
-      this.templatePath('routes/test.ts'),
-      this.destinationPath('src/routes/test.ts')
-    )
-    this.fs.copy(
-      this.templatePath('initialization'),
-      this.destinationPath('src/initialization')
-    )
-  }
-
-  install() {
-    this.yarnInstall(['express', 'express-healthcheck', 'morgan']);
-    this.yarnInstall(['@types/express', '@types/morgan'], { 'dev': true });
   }
 };

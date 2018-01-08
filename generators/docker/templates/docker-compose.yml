@@ -8,10 +8,14 @@ services:
         ENVIRONMENT: development
     environment:
       - NODE_ENV=development
-    volumes:
-      - ".:/code"
-      # mount modules from image
-      - "/code/node_modules"
+    networks:
+      - default
     ports:
       - "4000:4000"
     command: "yarn watch"
+    volumes:
+      - ".:/code"
+      - "/code/node_modules"
+
+networks:
+  default: {}

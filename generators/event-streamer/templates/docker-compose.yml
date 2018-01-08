@@ -1,0 +1,10 @@
+services:
+  app:
+    networks:
+      - default
+      - confluent_kafka
+
+networks:
+  default: {}
+  confluent_kafka:
+    external: true
