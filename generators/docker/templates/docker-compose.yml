@@ -6,6 +6,7 @@ services:
       context: .
       args:
         ENVIRONMENT: development
+        CLEAR_BUILD_DEPENDENCIES: 'false'
     environment:
       - NODE_ENV=development
     networks:

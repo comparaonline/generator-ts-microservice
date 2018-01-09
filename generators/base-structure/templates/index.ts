@@ -11,7 +11,7 @@ const servers: Server[] = [
 ];
 
 Promise.all(servers.map(server => server.start()))
-  .then(results => results.forEach(message => console.log()))
+  .then(results => results.forEach(message => console.log(message)))
   .then(() => `${config.get('appName')} started!`);
 
 // Graceful shutdown. Based on:
