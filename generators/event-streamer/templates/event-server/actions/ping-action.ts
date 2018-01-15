@@ -1,6 +1,5 @@
 import { Action } from 'event-streamer';
-import { Ping } from '../events/ping';
-import { Pong } from '../events/pong';
+import { Ping, Pong } from '../events/ping-events';
 
 export class PingAction extends Action {
   private pongEmitter = this.emitter(Pong);

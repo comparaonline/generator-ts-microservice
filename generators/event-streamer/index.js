@@ -36,6 +36,19 @@ module.exports = class extends Generator {
       this.templatePath('event-server'),
       this.destinationPath('src/event-server')
     );
+    this._removeOldVersions();
+  }
+
+  _removeOldVersions() {
+    const oldFiles = [
+      'src/event-server/events/pong.ts',
+      'src/event-server/events/ping.ts'
+    ]
+    oldFiles.forEach(file => {
+      if (this.fs.exists(this.destinationPath(file))) {
+        this.fs.delete(this.destinationPath(file));
+      }
+    });
   }
 
   _yamlOrder(a, b) {
