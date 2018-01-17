@@ -4,7 +4,7 @@ const extend = _.merge;
 const Generator = require('yeoman-generator');
 
 module.exports = class extends Generator {
-  devDependencies() {
+  static get devDependencies() {
     return ['tslint', 'tslint-config-airbnb'];
   }
   writing() {
