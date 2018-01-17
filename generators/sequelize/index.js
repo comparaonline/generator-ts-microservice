@@ -105,7 +105,7 @@ module.exports = class extends Generator {
   }
 
   _extendConfig() {
-    const config = extend(
+    const defaultConfig = extend(
       {
         sequelize: {
           username: "user",
@@ -117,6 +117,16 @@ module.exports = class extends Generator {
       },
       this.fs.readJSON(this.destinationPath('config/default.json'), {})
     );
-    this.fs.writeJSON(this.destinationPath('config/default.json'), config);
+    const testConfig = extend(
+      {
+        sequelize: {
+          database: `${this.options.name}-test`,
+          logging: false
+        }
+      },
+      this.fs.readJSON(this.destinationPath('config/test.json'), {})
+    );
+    this.fs.writeJSON(this.destinationPath('config/default.json'), defaultConfig);
+    this.fs.writeJSON(this.destinationPath('config/test.json'), testConfig);
   }
 };
