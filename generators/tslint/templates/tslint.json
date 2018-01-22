@@ -1,6 +1,15 @@
 {
   "extends": "tslint-config-airbnb",
   "rules": {
+    "array-type": [
+      true,
+      "array-simple"
+    ],
+    "no-irregular-whitespace": true,
+    "no-trailing-whitespace": true,
+    "no-unused-variable": true,
+    "strict-boolean-expressions": false,
+    "import-name": false,
     "trailing-comma": [
       true,
       {
@@ -8,7 +17,25 @@
         "singleline": "never"
       }
     ],
-    "array-type": false,
-    "strict-boolean-expressions": false
+    "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case"],
+    "whitespace": [true, "check-separator"],
+    "member-ordering": [true, {"order": "fields-first"}],
+    "no-magic-numbers": true,
+    "no-eval": true,
+    "no-string-throw": true,
+    "no-switch-case-fall-through": true,
+    "no-var-keyword": true,
+    "prefer-object-spread": true,
+    "use-default-type-parameter": true,
+    "cyclomatic-complexity": true,
+    "deprecation": true,
+    "eofline": true,
+    "max-line-length": [true, 100],
+    "no-duplicate-imports": true,
+    "arrow-return-shorthand": [true, "multiline"],
+    "import-spacing": true,
+    "new-parens": true,
+    "no-consecutive-blank-lines": true,
+    "quotemark": [true, "single"]
   }
 }
