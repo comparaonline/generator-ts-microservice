@@ -31,6 +31,7 @@ module.exports = class extends Generator {
         setupFiles: [
           './src/initialization/index.ts'
         ],
+        testEnvironment: "node",
         transform: {
           '\\.(ts|tsx)$': '<rootDir>/node_modules/ts-jest/preprocessor.js'
         },
