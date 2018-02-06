@@ -12,7 +12,11 @@ const servers: Server[] = [
 
 Promise.all(servers.map(server => server.start()))
   .then(results => results.forEach(message => console.log(message)))
-  .then(() => `${config.get('appName')} started!`);
+  .then(() => console.log(`${config.get('appName')} started!`))
+  .catch((error: Error) => {
+    console.error(error);
+    process.exit(1);
+  });
 
 // Graceful shutdown. Based on:
 // https://github.com/RisingStack/kubernetes-graceful-shutdown-example/blob/master/src/index.js
@@ -20,7 +24,7 @@ function shutdown() {
   console.log(`Shutting down ${config.get('appName')}`);
   Promise.all(servers.map(server => server.stop()))
     .then(results => results.forEach(message => console.log()))
-    .then(() => `${config.get('appName')} stopped!`)
+    .then(() => console.log(`${config.get('appName')} stopped!`))
     .catch((error: Error) => {
       console.error(error);
       process.exitCode = 1;
