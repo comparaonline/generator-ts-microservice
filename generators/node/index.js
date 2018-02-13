@@ -90,11 +90,14 @@ module.exports = class extends Generator {
   writing() {
     const currentPkg = this.fs.readJSON(this.destinationPath('package.json'), {});
 
+    const keywords = Array.isArray(this.props.keywords) ? this.props.keywords
+      : this.props.keywords.split(/\s*,\s*/g);
+
     const pkg = extend({
+      keywords,
       name: this.options.name,
       version: this.props.version || '1.0.0',
       description: this.props.description,
-      keywords: this.props.keywords,
       main: 'index.js',
       private: this.props.private,
       scripts: {},

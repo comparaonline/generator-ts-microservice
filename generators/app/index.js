@@ -23,6 +23,22 @@ module.exports = class extends Generator {
         filter: name => name.toLowerCase().replace(/\s+|_/, '-')
       },
       {
+        name: 'testFramework',
+        message: 'Choose the test framework you want to use',
+        type: 'list',
+        default: '../mocha',
+        choices: [
+          {
+            name: 'Mocha + Chai',
+            value: '../mocha'
+          },
+          {
+            name: `Jest (${chalk.red('NOT RECOMMENDED!!!!')})`,
+            value: '../jest'
+          }
+        ]
+      },
+      {
         name: 'optionalDependencies',
         message: 'Select which optional dependencies you need installed',
         type: 'checkbox',
@@ -66,6 +82,7 @@ module.exports = class extends Generator {
       'generator-node/generators/git'
     ];
     this.props.dependencies = dependencies
+      .concat(this.props.testFramework)
       .concat(this.props.optionalDependencies)
       .map(require.resolve);
     this.props.dependencies
