@@ -30,13 +30,60 @@ module.exports = class extends Generator {
     this._extendConfig();
     this.extendYaml(
       this.destinationPath('docker-compose.yml'),
-      this.templatePath('docker-compose.yml'));
-
-    this.fs.copy(
-      this.templatePath('event-server'),
-      this.destinationPath('src/event-server')
+      this.templatePath('docker-compose.yml')
     );
+
+    mkdirp.sync('src/event-server/actions/__tests__');
+    mkdirp.sync('src/event-server/events');
+    this.fs.copy(
+      this.templatePath('event-server/actions/ping-action.ts'),
+      this.destinationPath('src/event-server/actions/ping-action.ts')
+    );
+    this.fs.copy(
+      this.templatePath('event-server/events/ping-events.ts'),
+      this.destinationPath('src/event-server/events/ping-events.ts')
+    );
+    this.fs.copy(
+      this.templatePath('event-server/index.ts'),
+      this.destinationPath('src/event-server/index.ts')
+    );
+    this.fs.copy(
+      this.templatePath('event-server/router.ts'),
+      this.destinationPath('src/event-server/router.ts')
+    );
+    try {
+      this.fs.copy(
+        this.templatePath(`event-server/actions/__tests__/ping-action.${this._testFramework()}.ts`),
+        this.destinationPath('src/event-server/actions/__tests__/ping-action.ts')
+      );
+    } catch (e) {
+      this.log.error(`Error!!! ${e.message}`);
+    }
     this._removeOldVersions();
+  }
+
+  _testInitialization() {
+    const additionalParts = [];
+    if (this._hasDependency('sequelize')) {
+      mkdirp.sync(this.destinationPath('src/test-helpers'));
+      this.fs.copy(
+        this.templatePath('sequelize.ts'),
+        this.destinationPath('src/test-helpers/sequelize.ts')
+      )
+    }
+    return additionalParts.join('\n')
+  }
+
+  _testFramework() {
+    const deps = this.options.dependencies
+      .map(v => v.replace(/.*\/([^\/]+)\/index\.js/, '$1'));
+    if (deps.includes('mocha')) {
+      return 'mocha';
+    } else if (deps.includes('jest')) {
+      return 'jest';
+    } else {
+      throw new Error('No test framework defined');
+    }
   }
 
   _removeOldVersions() {
