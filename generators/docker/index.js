@@ -43,7 +43,7 @@ module.exports = class extends Generator {
 
   _additionalParts() {
     const additionalParts = [];
-    if (this._hasDependency('sequelize')) {
+    if (this.options.hasDependency('sequelize')) {
       const sequelize = this.fs.read(this.templatePath('Dockerfile-sequelize'));
       additionalParts.push(sequelize);
     }
@@ -52,17 +52,10 @@ module.exports = class extends Generator {
 
   _additionalDependencies() {
     const additionalDependencies = [];
-    if (this._hasDependency('event-streamer')) {
+    if (this.options.hasDependency('event-streamer')) {
       const kafka = this.fs.read(this.templatePath('Dockerfile-event-streamer'));
       additionalDependencies.push(kafka);
     }
     return additionalDependencies.join('\n');
   }
-
-  _hasDependency(dependency) {
-    return !!this.options.optionalDependencies
-      .reduce((a, b) => a.concat(b), [])
-      .find(elem => elem.indexOf(dependency) !== -1) || false;
-  }
-
 };

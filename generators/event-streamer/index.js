@@ -75,11 +75,9 @@ module.exports = class extends Generator {
   }
 
   _testFramework() {
-    const deps = this.options.dependencies
-      .map(v => v.replace(/.*\/([^\/]+)\/index\.js/, '$1'));
-    if (deps.includes('mocha')) {
+    if (this.options.hasDependency('mocha')) {
       return 'mocha';
-    } else if (deps.includes('jest')) {
+    } else if (this.options.hasDependency('jest')) {
       return 'jest';
     } else {
       throw new Error('No test framework defined');

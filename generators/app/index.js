@@ -66,7 +66,19 @@ module.exports = class extends Generator {
     this.props.keywords = ['comparaonline', 'microservice']
 
     this._checkPath();
-    const dependencies = [
+    const dependencies = this._dependencies();
+    const resolved = dependencies.map(require.resolve);
+
+    this.props.dependencies = resolved.map(require)
+    this.props.hasDependency = name => dependencies
+      .map(v => v.replace(/.*\/([^\/]+)/, '$1'))
+      .includes(name);
+
+    resolved.forEach(dependency => this.composeWith(dependency, this.props));
+  }
+
+  _dependencies() {
+    return [
       '../node',
       '../base-structure',
       '../nodemon',
@@ -78,14 +90,10 @@ module.exports = class extends Generator {
       '../circle',
       '../kubernetes',
       'generator-node/generators/editorconfig',
-      'generator-node/generators/git'
+      'generator-node/generators/git',
+      this.props.testFramework,
+      ...this.props.optionalDependencies
     ];
-    this.props.dependencies = dependencies
-      .concat(this.props.testFramework)
-      .concat(this.props.optionalDependencies)
-      .map(require.resolve);
-    this.props.dependencies
-      .forEach(dependency => this.composeWith(dependency, this.props));
   }
 
   _checkPath() {
@@ -100,17 +108,15 @@ module.exports = class extends Generator {
   }
 
   install() {
-    const modules = this.props.dependencies
-      .map(require);
-    const dependencies = modules
+    const dependencies = this.props.dependencies
       .filter(dep => dep.dependencies)
       .map(dep => dep.dependencies)
-      .reduce((a, b) => a.concat(b), []);
+      .reduce((a, b) => [...a, ...b]);
 
-    const devDependencies = modules
+    const devDependencies = this.props.dependencies
       .filter(dep => dep.devDependencies)
       .map(dep => dep.devDependencies)
-      .reduce((a, b) => a.concat(b), []);
+      .reduce((a, b) => [...a, ...b]);
     this.yarnInstall(dependencies);
     this.yarnInstall(devDependencies, {dev: true});
   }
