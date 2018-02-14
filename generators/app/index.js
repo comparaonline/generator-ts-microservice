@@ -69,7 +69,6 @@ module.exports = class extends Generator {
     const dependencies = [
       '../node',
       '../base-structure',
-      '../jest',
       '../nodemon',
       '../typescript',
       '../tslint',
