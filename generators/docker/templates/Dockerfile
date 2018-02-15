@@ -21,5 +21,5 @@ FROM base AS production
 LABEL Name="ComparaOnline <%= microserviceName %>" Version="2.0"
 ARG ENVIRONMENT="production"
 ENV NODE_ENV=${ENVIRONMENT}
-COPY --from=build /code ./
+COPY --from=clean /code ./
 CMD ["node", "build/index.js"]
