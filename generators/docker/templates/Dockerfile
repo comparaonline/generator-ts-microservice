@@ -1,38 +1,25 @@
-FROM node:8-alpine
-LABEL Name="ComparaOnline <%= microserviceName %>" Version="1.0"
-
-ARG ENVIRONMENT="production"
-ARG CLEAR_BUILD_DEPENDENCIES=true
-
-ENV \
-  NODE_ENV=${ENVIRONMENT} \
-  BUILD_LIBRDKAFKA=0
-
-EXPOSE 4000
-
+FROM node:8-alpine AS base
 WORKDIR /code
+EXPOSE 4000
+<%= [...new Set(base || [])].join('\n') %>
 
+FROM base AS build
+RUN apk add --no-cache bash make g++ python
 COPY package.json yarn.lock ./
-
-<%= additionalDependencies %>
-
-RUN \
-  # Build packages are not included in the final Docker image.
-  apk add --no-cache --virtual .build-packages \
-  bash \
-  make \
-  g++ \
-  python \
-  && \
-  # Install node packages
-  yarn install \
-  && \
-  # Clean up build packages.
-  if ${CLEAR_BUILD_DEPENDENCIES}; then \
-  yarn cache clean && apk del .build-packages; fi
-
+RUN yarn install --production=false
+COPY tsconfig.json <%= [...new Set(files || [])].join(' ') %> ./
 COPY config/ ./config
-COPY build/  ./
-<%= additionalParts %>
+<%= [...new Set(folders || [])].map(f => `COPY ${f}/ ./${f}`).join('\n') %>
+COPY src/ ./src
+RUN yarn compile
 
-CMD ["node", "index.js"]
+FROM build as clean
+RUN yarn install --production
+RUN rm -rf ./src
+
+FROM base AS production
+LABEL Name="ComparaOnline <%= microserviceName %>" Version="2.0"
+ARG ENVIRONMENT="production"
+ENV NODE_ENV=${ENVIRONMENT}
+COPY --from=build /code ./
+CMD ["node", "build/index.js"]

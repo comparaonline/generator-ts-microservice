@@ -1,4 +1,4 @@
-version: "3.3"
+version: "3.4"
 
 services:
   app:
@@ -6,7 +6,7 @@ services:
       context: .
       args:
         ENVIRONMENT: development
-        CLEAR_BUILD_DEPENDENCIES: 'false'
+      target: build
     environment:
       - NODE_ENV=development
     networks:

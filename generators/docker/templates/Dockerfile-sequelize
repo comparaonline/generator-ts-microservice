@@ -1,2 +1,0 @@
-COPY .sequelizerc ./
-COPY migrations/ ./migrations

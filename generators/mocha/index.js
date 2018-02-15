@@ -30,7 +30,7 @@ module.exports = class extends Generator {
 
   _testInitialization() {
     const additionalParts = [];
-    if (this._hasDependency('sequelize')) {
+    if (this.options.hasDependency('sequelize')) {
       mkdirp.sync(this.destinationPath('src/test-helpers'));
       this.fs.copy(
         this.templatePath('sequelize.ts'),
@@ -38,11 +38,5 @@ module.exports = class extends Generator {
       )
     }
     return additionalParts.join('\n')
-  }
-
-  _hasDependency(dependency) {
-    return !!this.options.optionalDependencies
-      .reduce((a, b) => a.concat(b), [])
-      .find(elem => elem.indexOf(dependency) !== -1) || false;
   }
 };

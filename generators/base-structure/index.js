@@ -20,8 +20,6 @@ module.exports = class extends Generator {
 
   writing() {
     const servers = this.options.dependencies
-      .reduce((a, b) => a.concat(b), [])
-      .map(require)
       .filter(dep => dep.registerServer !== undefined)
       .map(dep => dep.registerServer)
       .map(dep => `require('${dep}').default`);

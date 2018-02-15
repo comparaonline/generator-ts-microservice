@@ -30,39 +30,32 @@ module.exports = class extends Generator {
       this.destinationPath('.dockerignore')
     );
 
+    const dockerOptions = { microserviceName: this.options.name };
+    this._addSequelize(dockerOptions);
+    this._addEventStreamer(dockerOptions);
+
     this.fs.copyTpl(
       this.templatePath('Dockerfile'),
       this.destinationPath('Dockerfile'),
-      {
-        microserviceName: this.options.name,
-        additionalParts: this._additionalParts(),
-        additionalDependencies: this._additionalDependencies()
-      }
+      dockerOptions
     );
   }
 
-  _additionalParts() {
-    const additionalParts = [];
-    if (this._hasDependency('sequelize')) {
-      const sequelize = this.fs.read(this.templatePath('Dockerfile-sequelize'));
-      additionalParts.push(sequelize);
+  _addSequelize(options) {
+    if (this.options.hasDependency('sequelize')) {
+      options.folders = (options.folders || []).concat(['migrations']);
+      options.files = (options.files || []).concat(['.sequelizerc']);
     }
-    return additionalParts.join('\n')
   }
 
-  _additionalDependencies() {
-    const additionalDependencies = [];
-    if (this._hasDependency('event-streamer')) {
-      const kafka = this.fs.read(this.templatePath('Dockerfile-event-streamer'));
-      additionalDependencies.push(kafka);
+  _addEventStreamer(options) {
+    if (this.options.hasDependency('event-streamer')) {
+      options.base = (options.base || []).concat([
+        'ENV BUILD_LIBRDKAFKA=0',
+        'RUN apk add --no-cache \\',
+        '  libressl --repository http://dl-cdn.alpinelinux.org/alpine/v3.7/main \\',
+        '  librdkafka-dev --repository http://dl-cdn.alpinelinux.org/alpine/v3.7/community'
+      ]);
     }
-    return additionalDependencies.join('\n');
   }
-
-  _hasDependency(dependency) {
-    return !!this.options.optionalDependencies
-      .reduce((a, b) => a.concat(b), [])
-      .find(elem => elem.indexOf(dependency) !== -1) || false;
-  }
-
 };
