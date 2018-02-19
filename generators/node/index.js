@@ -46,8 +46,12 @@ module.exports = class extends Generator {
 
   _parseAuthor(author) {
     const pattern = /^\s*([^>]+)\s*<([^>]*)>\s*\(([^)]+)\)\s*$/g;
-    const [, name, email, url,,] = pattern.exec(author);
-    return { name, email, url };
+    const result = pattern.exec(author);
+    return {
+      name: result[1],
+      email: result[2],
+      url: result[3]
+    };
   }
 
   prompting() {
