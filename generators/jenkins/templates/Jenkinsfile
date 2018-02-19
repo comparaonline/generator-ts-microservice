@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Prepare') {
+          steps {
+            sh 'docker network inspect confluent_kafka > /dev/null 2>&1 ||\
+                docker network create confluent_kafka'
+          }
+        }
+        stage('Build') {
+            steps {
+                sh 'docker-compose build'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'docker-compose run --rm app yarn test'
+            }
+        }
+    }
+
+    post {
+      always {
+        sh 'docker-compose down'
+      }
+    }
+}

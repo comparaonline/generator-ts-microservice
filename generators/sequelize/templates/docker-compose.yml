@@ -7,8 +7,6 @@ services:
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: pass
-    ports:
-      - 5432:5432
     networks:
       - default
     volumes:
