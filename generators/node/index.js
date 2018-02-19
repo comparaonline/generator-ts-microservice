@@ -35,13 +35,19 @@ module.exports = class extends Generator {
       this.props.authorEmail = this.pkg.author.email;
       this.props.authorUrl = this.pkg.author.url;
     } else if (_.isString(this.pkg.author)) {
-      const info = parseAuthor(this.pkg.author);
+      const info = this._parseAuthor(this.pkg.author);
       this.props.authorName = info.name;
       this.props.authorEmail = info.email;
       this.props.authorUrl = info.url;
     }
 
     this.props = extend(this.props, this.options);
+  }
+
+  _parseAuthor(author) {
+    const pattern = /^\s*([^>]+)\s*<([^>]*)>\s*\(([^)]+)\)\s*$/g;
+    const [, name, email, url,,] = pattern.exec(author);
+    return { name, email, url };
   }
 
   prompting() {
