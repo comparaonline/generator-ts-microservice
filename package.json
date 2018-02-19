@@ -1,6 +1,6 @@
 {
   "name": "generator-co-microservice",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "This bootstrap a microservice to run on the ComparaOnline infrastructure",
   "homepage": "https://github.com/comparaonline/generator-co-microservice",
   "author": {
