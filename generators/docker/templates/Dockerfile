@@ -1,15 +1,15 @@
 FROM node:8-alpine AS base
 WORKDIR /code
 EXPOSE 4000
-<%= [...new Set(base || [])].join('\n') %>
+<%= [...new Set(base)].join('\n') %>
 
 FROM base AS build
 RUN apk add --no-cache bash make g++ python
 COPY package.json yarn.lock ./
 RUN yarn install --production=false
-COPY tsconfig.json <%= [...new Set(files || [])].join(' ') %> ./
+COPY tsconfig.json <%= [...new Set(files)].join(' ') %> ./
 COPY config/ ./config
-<%= [...new Set(folders || [])].map(f => `COPY ${f}/ ./${f}`).join('\n') %>
+<%= [...new Set(folders)].map(f => `COPY ${f}/ ./${f}`).join('\n') %>
 COPY src/ ./src
 RUN yarn compile
 
