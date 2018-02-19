@@ -16,8 +16,7 @@ module.exports = class extends Generator {
 
     const pkg = extend({
       scripts: {
-        tslint: 'tslint -c tslint.json -p tsconfig.json',
-        pretest: 'yarn tslint',
+        tslint: 'tslint -c tslint.json -p tsconfig.json'
       }
     }, currentPkg);
 

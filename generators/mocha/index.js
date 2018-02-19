@@ -13,7 +13,8 @@ module.exports = class extends Generator {
 
     const pkg = extend({
       scripts: {
-        test: 'NODE_ENV=test mocha'
+        test: 'NODE_ENV=test mocha',
+        pretest: this._preTest()
       }
     }, currentPkg);
 
@@ -26,6 +27,15 @@ module.exports = class extends Generator {
     )
 
     this._testInitialization();
+  }
+
+  _preTest() {
+    const pretest = [];
+    if (this.options.hasDependency('tslint')) {
+      pretest.push('yarn tslint');
+    }
+    pretest.push('NODE_ENV=test yarn migrate');
+    return pretest.join(' && ');
   }
 
   _testInitialization() {
