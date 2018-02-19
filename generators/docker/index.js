@@ -30,15 +30,25 @@ module.exports = class extends Generator {
       this.destinationPath('.dockerignore')
     );
 
-    const dockerOptions = { microserviceName: this.options.name };
-    this._addSequelize(dockerOptions);
-    this._addEventStreamer(dockerOptions);
+    const dockerOptions = this._dockerOptions();
 
     this.fs.copyTpl(
       this.templatePath('Dockerfile'),
       this.destinationPath('Dockerfile'),
       dockerOptions
     );
+  }
+
+  _dockerOptions() {
+    const options = {
+      microserviceName: this.options.name,
+      base: [],
+      files: [],
+      folders: []
+    };
+    this._addSequelize(options);
+    this._addEventStreamer(options);
+    return options;
   }
 
   _addSequelize(options) {
