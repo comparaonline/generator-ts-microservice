@@ -34,7 +34,9 @@ module.exports = class extends Generator {
     if (this.options.hasDependency('tslint')) {
       pretest.push('yarn tslint');
     }
-    pretest.push('NODE_ENV=test yarn migrate');
+    if (this.options.hasDependency('sequelize')) {
+      pretest.push('NODE_ENV=test yarn migrate');
+    }
     return pretest.join(' && ');
   }
 
