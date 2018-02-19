@@ -39,6 +39,22 @@ module.exports = class extends Generator {
         ]
       },
       {
+        name: 'ciPlatform',
+        message: 'Choose the CI platform you want to use',
+        type: 'list',
+        default: '../jenkins',
+        choices: [
+          {
+            name: 'Jenkins',
+            value: '../jenkins'
+          },
+          {
+            name: `CircleCI (${chalk.red('We are deprecating support for circle!!!')})`,
+            value: '../circle'
+          }
+        ]
+      },
+      {
         name: 'optionalDependencies',
         message: 'Select which optional dependencies you need installed',
         type: 'checkbox',
@@ -87,10 +103,10 @@ module.exports = class extends Generator {
       '../node-config',
       '../server-express',
       '../docker',
-      '../circle',
       '../kubernetes',
       'generator-node/generators/editorconfig',
       'generator-node/generators/git',
+      this.props.ciPlatform,
       this.props.testFramework,
       ...this.props.optionalDependencies
     ];
