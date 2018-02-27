@@ -12,7 +12,7 @@ spec:
       containers:
       - name: <%= microserviceName %>
         image: gcr.io/co-gcp/<%= microserviceName %>
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 4000
         resources:
@@ -22,13 +22,13 @@ spec:
           httpGet:
             path: /<%= microserviceName %>/healthcheck
             port: 4000
-            scheme: HTTPS
+            scheme: HTTP
           initialDelaySeconds: 30
           timeoutSeconds: 1
         readinessProbe:
           httpGet:
             path: /<%= microserviceName %>/healthcheck
             port: 4000
-            scheme: HTTPS
+            scheme: HTTP
           initialDelaySeconds: 30
           timeoutSeconds: 1
