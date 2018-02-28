@@ -1,4 +1,4 @@
 --require ts-node/register
---file ./src/test-helpers/sequelize.ts
+<%= additional %>
 --watch-extensions ts,tsx
 src/**/__tests__/*.{ts,tsx}
