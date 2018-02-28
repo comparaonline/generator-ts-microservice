@@ -21,12 +21,21 @@ module.exports = class extends Generator {
     this.fs.writeJSON(this.destinationPath('package.json'), pkg);
 
     mkdirp.sync(this.destinationPath('test'));
-    this.fs.copy(
+    this.fs.copyTpl(
       this.templatePath('mocha.opts'),
-      this.destinationPath('test/mocha.opts')
+      this.destinationPath('test/mocha.opts'),
+      { additional: this._additional() }
     )
 
     this._testInitialization();
+  }
+
+  _additional() {
+    const additional = [];
+    if (this.options.hasDependency('sequelize')) {
+      additional.push('--file ./src/test-helpers/sequelize.ts');
+    }
+    return additional.toString('\n');
   }
 
   _preTest() {
