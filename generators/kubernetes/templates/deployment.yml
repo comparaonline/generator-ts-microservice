@@ -12,6 +12,9 @@ spec:
       containers:
       - name: <%= microserviceName %>
         image: gcr.io/co-gcp/<%= microserviceName %>
+        env:
+        - name: NODE_ENV
+          value: "production"
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 4000
