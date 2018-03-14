@@ -29,9 +29,13 @@ pipeline {
           }
         }
         steps {
-          sh 'deploy -k /home/jenkins/google-cloud-sdk/bin/kubectl \
-                     -g /home/jenkins/google-cloud-sdk/bin/gcloud \
-                     <%= microserviceName %>'
+          script {
+            GIT_BRANCH = sh(returnStdout: true, script: 'echo $BRANCH_NAME').trim()
+            STAGE = GIT_BRANCH == 'master' ? 'production' : 'staging';
+            sh "STAGE=${STAGE} deploy -k /home/jenkins/google-cloud-sdk/bin/kubectl \
+              -g /home/jenkins/google-cloud-sdk/bin/gcloud \
+              <%= microserviceName %>"
+          }
         }
       }
       stage ('Accept Release') {

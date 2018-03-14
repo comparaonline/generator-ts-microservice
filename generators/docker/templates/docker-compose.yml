@@ -4,11 +4,10 @@ services:
   app:
     build:
       context: .
-      args:
-        ENVIRONMENT: development
       target: build
     environment:
       - NODE_ENV=development
+      - NODE_CONFIG_ENV=development
     networks:
       - default
     ports:
@@ -17,6 +16,5 @@ services:
     volumes:
       - ".:/code"
       - "/code/node_modules"
-
 networks:
   default: {}
