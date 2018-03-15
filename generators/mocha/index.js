@@ -13,7 +13,7 @@ module.exports = class extends Generator {
 
     const pkg = extend({
       scripts: {
-        test: 'NODE_ENV=test mocha',
+        test: 'NODE_CONFIG_ENV=test mocha',
         pretest: this._preTest()
       }
     }, currentPkg);
@@ -44,7 +44,7 @@ module.exports = class extends Generator {
       pretest.push('yarn tslint');
     }
     if (this.options.hasDependency('sequelize')) {
-      pretest.push('NODE_ENV=test yarn migrate');
+      pretest.push('NODE_CONFIG_ENV=test yarn migrate');
     }
     return pretest.join(' && ');
   }
