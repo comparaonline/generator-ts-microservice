@@ -1,12 +1,15 @@
 {
-  "name": "generator-co-microservice",
-  "version": "2.1.1",
+  "name": "@comparaonline/generator-co-microservice",
+  "version": "2.2.0",
   "description": "This bootstrap a microservice to run on the ComparaOnline infrastructure",
   "homepage": "https://github.com/comparaonline/generator-co-microservice",
   "author": {
     "name": "Ezequiel Rabinovich",
     "email": "erabinovich@gmail.com",
-    "url": ""
+    "url": "https://github.com/comparaonline/generator-co-microservice"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "files": [
     "generators",
