@@ -12,7 +12,7 @@ First, install [Yeoman](http://yeoman.io) and generator-co-microservice using [n
 
 ```bash
 yarn global add yo
-yarn global add generator-co-microservice
+yarn global add generator-ts-microservice
 ```
 
 Then generate your new project:
