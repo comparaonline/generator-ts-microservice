@@ -18,7 +18,7 @@ yarn global add generator-ts-microservice
 Then generate your new project:
 
 ```bash
-yo co-microservice
+yo ts-microservice
 ```
 
 ## Getting To Know Yeoman
