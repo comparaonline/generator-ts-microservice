@@ -1,6 +1,5 @@
 version: '3.3'
 services:
   app:
-    environment: [NODE_ENV=test]
+    environment: [NODE_CONFIG_ENV=test]
     command: yarn test --watchAll
-
