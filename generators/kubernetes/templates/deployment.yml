@@ -14,7 +14,7 @@ spec:
         image: gcr.io/co-gcp/<%= microserviceName %>
         env:
         - name: NODE_ENV
-          value: "production"
+          value: ${STAGE}
         - name: NODE_CONFIG_ENV
           value: ${STAGE}
         imagePullPolicy: IfNotPresent

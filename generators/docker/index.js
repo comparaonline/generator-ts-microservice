@@ -59,7 +59,7 @@ module.exports = class extends Generator {
   }
 
   _addEventStreamer(options) {
-    if (this.options.hasDependency('event-streamer')) {
+    if (this.options.hasDependency('@comparaonline/event-streamer')) {
       options.base = (options.base || []).concat([
         'ENV BUILD_LIBRDKAFKA=0',
         'RUN apk add --no-cache \\',

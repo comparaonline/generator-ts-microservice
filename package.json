@@ -1,6 +1,6 @@
 {
   "name": "generator-ts-microservice",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "This bootstrap a microservice to run on the ComparaOnline infrastructure",
   "homepage": "https://github.com/comparaonline/generator-ts-microservice",
   "author": {
@@ -41,7 +41,7 @@
   "dependencies": {
     "chalk": "^2.1.0",
     "ejs": "^2.5.7",
-    "generator-node": "^2.3.0",
+    "generator-node": "^2.4.1",
     "inquirer-npm-name": "^2.0.0",
     "js-yaml": "^3.10.0",
     "mkdirp": "^0.5.1",

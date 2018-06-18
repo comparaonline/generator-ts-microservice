@@ -134,6 +134,6 @@ module.exports = class extends Generator {
       .map(dep => dep.devDependencies)
       .reduce((a, b) => [...a, ...b]);
     this.yarnInstall(dependencies);
-    this.yarnInstall(devDependencies, {dev: true});
+    this.yarnInstall(devDependencies, { dev: true });
   }
 };

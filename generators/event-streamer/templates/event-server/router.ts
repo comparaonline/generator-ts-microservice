@@ -1,4 +1,4 @@
-import { Router } from 'event-streamer';
+import { Router } from '@comparaonline/event-streamer';
 import { Ping } from './events/ping-events';
 import { PingAction } from './actions/ping-action';
 
