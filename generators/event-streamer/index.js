@@ -12,7 +12,7 @@ module.exports = class extends Generator {
   }
 
   static get dependencies() {
-    return ['event-streamer'];
+    return ['@comparaonline/event-streamer@0.2.7'];
   }
 
   constructor(args, options) {

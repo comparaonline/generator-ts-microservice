@@ -1,4 +1,4 @@
-import { KafkaServer } from 'event-streamer';
+import { KafkaServer } from '@comparaonline/event-streamer';
 import * as config from 'config';
 import { router } from './router';
 

@@ -1,4 +1,4 @@
-import { KafkaEvent } from 'event-streamer';
+import { KafkaEvent } from '@comparaonline/event-streamer';
 import * as config from 'config';
 
 export class Ping extends KafkaEvent {

@@ -10,6 +10,7 @@ RUN yarn install --production=false
 COPY tsconfig.json <%= [...new Set(files)].join(' ') %> ./
 COPY config/ ./config
 <%= [...new Set(folders)].map(f => `COPY ${f}/ ./${f}`).join('\n') %>
+COPY bin/ ./bin
 COPY src/ ./src
 RUN yarn compile
 
@@ -22,4 +23,4 @@ LABEL Name="ComparaOnline <%= microserviceName %>" Version="2.0"
 ARG ENVIRONMENT="production"
 ENV NODE_ENV=${ENVIRONMENT}
 COPY --from=clean /code ./
-CMD ["node", "build/index.js"]
+CMD ["npm", "start"]

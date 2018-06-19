@@ -1,5 +1,4 @@
-import { PingAction } from '../ping-action';
-import { TestServer } from 'event-streamer';
+import { TestServer } from '@comparaonline/event-streamer';
 import { router } from '../../router';
 import { Pong } from '../../events/ping-events';
 
