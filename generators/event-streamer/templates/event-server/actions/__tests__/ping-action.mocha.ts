@@ -6,8 +6,8 @@ import { Pong } from '../../events/ping-events';
 describe('PingAction', () => {
   it('returns consumer data when pinged', async () => {
     const server = new TestServer(router);
-    server.inputEvent({ code: 'Ping' });
-    const published = await server.publishedEvents();
+    server.input({ code: 'Ping' });
+    const published = await server.emitted();
     expect(published).to.have.length(1);
     expect(published[0]).to.be.instanceof(Pong);
     const publishedData = JSON.parse(published[0].toString());

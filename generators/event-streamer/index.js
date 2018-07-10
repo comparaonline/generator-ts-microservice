@@ -12,7 +12,7 @@ module.exports = class extends Generator {
   }
 
   static get dependencies() {
-    return ['@comparaonline/event-streamer@0.2.7'];
+    return ['@comparaonline/event-streamer@^1.0.1'];
   }
 
   constructor(args, options) {
@@ -113,19 +113,12 @@ module.exports = class extends Generator {
     const config = extend(
       {
         "kafka": {
-          "producer": {
-            "group.id": this.options.name,
-            "metadata.broker.list": "kafka:9092"
-          },
-          "producerTopic": "kafka_topic",
-          "consumer": {
-            "group.id": this.options.name,
-            "metadata.broker.list": "kafka:9092"
-          },
-          "consumerTopicConfiguration": {},
+          "groupId": this.options.name,
+          "broker": "localhost:9092",
           "consumerTopics": [
             "kafka_topic"
-          ]
+          ],
+          "producerTopic": "kafka_topic"
         }
       },
       this.fs.readJSON(this.destinationPath('config/default.json'), {})

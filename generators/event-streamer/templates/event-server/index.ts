@@ -7,12 +7,15 @@ export const server = new KafkaServer(router, config.get('kafka'));
 const start = () => Promise.resolve(server.start())
   .then(() => 'KafkaServer started');
 
-const stop = () => new Promise((resolve, reject) => server.stop((err) => {
-  if (err) {
-    reject(err);
-  } else {
-    resolve('KafkaServer stopped');
-  }
-}));
+const stop = () => new Promise((resolve, reject) => {
+  server.stop()
+    .catch((error: Error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve('KafkaServer stopped');
+      }
+    });
+});
 
 export default { start, stop };

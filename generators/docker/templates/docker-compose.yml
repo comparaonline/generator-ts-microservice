@@ -8,6 +8,14 @@ services:
     environment:
       - NODE_ENV=development
       - NODE_CONFIG_ENV=development
+      - >
+        NODE_CONFIG={   
+          "kafka": {
+            "broker": "kafka:9092"
+          },
+          "sequelize": { "host": "postgres" },
+          "redis": { "host": "redis" }
+        }
     networks:
       - default
     ports:

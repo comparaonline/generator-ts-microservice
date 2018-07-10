@@ -1,17 +1,15 @@
-import { KafkaEvent } from '@comparaonline/event-streamer';
+import { KafkaInputEvent, KafkaOutputEvent } from '@comparaonline/event-streamer';
 import * as config from 'config';
 
-export class Ping extends KafkaEvent {
+export class Ping extends KafkaInputEvent {
   build(args: {}) { }
 }
 
-export class Pong extends KafkaEvent {
-  build(args: {}) { }
-  toString() {
-    return JSON.stringify({
-      code: this.code,
+export class Pong extends KafkaOutputEvent {
+  encode() {
+    return {
       service: config.get('appName'),
       uptime: process.uptime()
-    });
+    };
   }
 }
