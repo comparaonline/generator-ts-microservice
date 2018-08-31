@@ -13,14 +13,18 @@ module.exports = class extends Generator {
   constructor(args, options) {
     super(args, options);
     fileHelper(this);
+    this.originalConfig = this.fs.readJSON(
+      this.destinationPath('config/default.json'),
+      { raven: { dsn: false } }
+    );
   }
 
   prompting() {
     const prompts = [
       {
         name: 'dsn',
-        message: 'Sentry.io DSN (something like https://0123456789abcdef0123456789abcde@sentry.io/1234567)',
-        default: false,
+        message: 'Sentry.io DSN',
+        default: this.originalConfig.raven.dsn
       }
     ];
     return this.prompt(prompts).then(props => {
