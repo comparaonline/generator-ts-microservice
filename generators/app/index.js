@@ -67,7 +67,7 @@ module.exports = class extends Generator {
           {
             name: 'Event Streamer (Kafka framework)',
             value: '../event-streamer',
-            checked: (this.pkg.dependencies || {})['event-streamer'] !== undefined
+            checked: (this.pkg.dependencies || {})['@comparaonline/event-streamer'] !== undefined
           }
         ]
       }
@@ -104,6 +104,7 @@ module.exports = class extends Generator {
       '../server-express',
       '../docker',
       '../kubernetes',
+      '../raven',
       'generator-node/generators/editorconfig',
       'generator-node/generators/git',
       this.props.ciPlatform,

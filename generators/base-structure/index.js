@@ -1,6 +1,7 @@
 'use strict';
 const Generator = require('yeoman-generator');
 const yamlHelper = require('../../helpers/yaml-helper');
+const mkdirp = require('mkdirp');
 
 module.exports = class extends Generator {
   constructor(args, options) {
@@ -24,6 +25,8 @@ module.exports = class extends Generator {
       .filter(dep => dep.registerServer !== undefined)
       .map(dep => dep.registerServer)
       .map(dep => `require('${dep}').default`);
+
+    mkdirp.sync(this.destinationPath('bin'));
 
     this.fs.copyTpl(
       this.templatePath('index.ts'),
