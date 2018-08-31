@@ -5,7 +5,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": [
-      "es2015",
+      "es7",
       "dom"
     ],
     "module": "commonjs",
