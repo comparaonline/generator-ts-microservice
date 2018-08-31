@@ -8,7 +8,7 @@ const Generator = require('yeoman-generator');
 
 module.exports = class extends Generator {
   static get dependencies() {
-    return ['sequelize', 'sequelize-cli', 'sequelize-typescript@^0.6.6-beta.1', 'pg'];
+    return ['raven'];
   }
   constructor(args, options) {
     super(args, options);
