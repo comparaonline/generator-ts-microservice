@@ -43,6 +43,6 @@ module.exports = class extends Generator {
   _loadYamlTemplate(file) {
     const text = this.fs.read(this.templatePath(file), '');
     const rendered = ejs.render(text, { microserviceName: this.options.name });
-    return this.parseYaml(rendered.trim(), {});
+    return this.parseYaml(rendered.trim());
   }
 };

@@ -1,31 +1,18 @@
-const { safeLoad, safeDump } = require('js-yaml');
-const _ = require('lodash');
-const extend = _.merge;
+const { wrap } = require('./fn-helper');
+const unique = array => Array.from(new Set(array));
 
 module.exports = (object) => {
-  object.readLines = function (filePath) {
-    try {
-      this.fs.read(filePath, '').split('\n');
-    } catch (e) {
-      return [];
-    }
-  }
+  const read = wrap(path => object.fs.read(path, '').split('\n')).onError([]);
+  const format = lines => unique(lines)
+    .filter(line => typeof line === 'string')
+    .filter(line => line.trim() !== '')
+    .sort()
+    .concat([''])
+    .join('\n');
+  const save = (path, lines) => object.fs.write(path, format(lines));
 
-  object.saveLines = function (filePath, lines) {
-    const text = lines
-      .filter(line => typeof line === 'string')
-      .filter(line => line.trim() !== '')
-      .concat([''])
-      .join('\n');
-    this.fs.write(filePath, text);
-  }
-
-  object.extendLines = function (originalPath, newPath, additionalLines = []) {
-    const original = this.readLines(originalPath);
-    const newFile = typeof newPath === 'string' ?
-      this.readLines(newPath, '') : newPath;
-    const extended = newFile.concat(additionalLines).concat(original);
-    const unique = Array.from(new Set(extended)).sort()
-    this.saveLines(originalPath, unique);
-  };
+  object.extendLines = (originalPath, additionalLines) => save(
+    originalPath,
+    read(originalPath).concat(additionalLines)
+  );
 };
