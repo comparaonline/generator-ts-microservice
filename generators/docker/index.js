@@ -19,7 +19,7 @@ module.exports = class extends Generator {
   }
 
   writing() {
-    const template = this.readYaml(this.templatePath('docker-compose.yml'), {});
+    const template = this.readYaml(this.templatePath('docker-compose.yml'));
     this.extendYaml(
       this.destinationPath('docker-compose.yml'),
       this.templatePath('docker-compose.yml')

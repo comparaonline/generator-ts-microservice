@@ -36,10 +36,6 @@ module.exports = class extends Generator {
         }
       }
     );
-    this.extendLines(
-      this.destinationPath('src/initialization/index.ts'),
-      ["import './sequelize';"]
-    );
     this._extendConfig();
 
     mkdirp.sync(this.destinationPath('src/initialization'));
@@ -70,6 +66,11 @@ module.exports = class extends Generator {
     this.fs.copy(
       this.templatePath('gitkeep'),
       this.destinationPath('src/seeders/.gitkeep')
+    );
+
+    this.extendLines(
+      this.destinationPath('src/initialization/index.ts'),
+      ["import './sequelize';"]
     );
   }
 

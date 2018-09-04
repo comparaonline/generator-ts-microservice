@@ -1,46 +1,23 @@
 const { safeLoad, safeDump } = require('js-yaml');
 const _ = require('lodash');
 const extend = _.merge;
+const { wrap } = require('./fn-helper');
+const isString = value => typeof value === 'string';
 
 module.exports = (object) => {
-  object.readYaml = function (path, defaultValue) {
-    try {
-      const text = this.fs.read(path);
-      return this.parseYaml(text);
-    } catch (e) {
-      if (defaultValue !== undefined) {
-        return defaultValue;
-      }
-      throw e;
-    }
-  };
+  const read = wrap(path => object.fs.read(path, '')).onError('');
+  const format = yaml => safeDump(yaml, {
+    ...(object._yamlOrder && { sortKeys: object._yamlOrder })
+  });
+  const writeYaml = (path, yaml) => object.fs.write(path, format(yaml));
 
-  object.parseYaml = (text, defaultValue) => {
-    try {
-      return safeLoad(text);
-    } catch (e) {
-      if (defaultValue !== undefined) {
-        return defaultValue;
-      }
-      throw e;
-    }
-  };
+  object.parseYaml = wrap(text => safeLoad(text)).onError({}).onUndefined({});
+  object.readYaml = path => object.parseYaml(read(path));
 
-  object.writeYaml = function (path, yaml) {
-    const options = {}
-    if (this._yamlOrder) {
-      options.sortKeys = this._yamlOrder;
-    }
-    const text = safeDump(yaml, options);
-    this.fs.write(path, text);
-  };
+  const readIfNecessary = wrap(object.readYaml).if(isString);
 
-  object.extendYaml = function (originalPath, newPath, additionalYaml = {}) {
-    const originalYaml = typeof originalPath == 'string' ?
-      this.readYaml(originalPath, {}) : originalPath;
-    const newYaml = typeof newPath === 'string' ?
-      this.readYaml(newPath, {}) : newPath;
-    const extendedYaml = extend(originalYaml, newYaml, additionalYaml);
-    this.writeYaml(originalPath, extendedYaml);
-  };
+  object.extendYaml = (original, extended, yaml = {}) => writeYaml(
+    original,
+    extend(readIfNecessary(original, {}), readIfNecessary(extended, {}), yaml)
+  );
 };
