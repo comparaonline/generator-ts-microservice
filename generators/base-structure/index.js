@@ -27,7 +27,6 @@ module.exports = class extends Generator {
       .map(server => `import '${server}';`)
       .sort()
       .join('\n');
-    console.dir(servers);
 
     mkdirp.sync(this.destinationPath('bin'));
 
