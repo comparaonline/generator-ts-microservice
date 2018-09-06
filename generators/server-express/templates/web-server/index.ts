@@ -52,3 +52,5 @@ application.onStart(() => {
     });
 });
 application.onShutdown(() => stop());
+
+export { start, stop };
