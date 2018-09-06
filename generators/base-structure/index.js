@@ -24,16 +24,17 @@ module.exports = class extends Generator {
       .reduce((a, b) => [...a, ...b])
       .filter(dep => dep.registerServer !== undefined)
       .map(dep => dep.registerServer)
-      .map(dep => `require('${dep}').default`);
+      .map(server => `import '${server}';`)
+      .sort()
+      .join('\n');
+    console.dir(servers);
 
     mkdirp.sync(this.destinationPath('bin'));
 
     this.fs.copyTpl(
       this.templatePath('index.ts'),
       this.destinationPath('src/index.ts'),
-      {
-        servers: servers.join(',\n  ')
-      }
+      { servers }
     );
 
     this.fs.copy(
