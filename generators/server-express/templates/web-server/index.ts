@@ -1,10 +1,23 @@
 import * as express from 'express';
 import * as logger from 'morgan';
 import * as config from 'config';
+import * as Raven from 'raven';
 import routes from './routes';
+import { application } from '../application';
 
 export const app = express();
-app.use(logger(config.get('server.logFormat')));
+
+if (config.util.getEnv('NODE_CONFIG_ENV') !== 'test') {
+  app.use(Raven.requestHandler());
+  app.use(Raven.errorHandler());
+  app.use(
+    logger(
+      config.get('server.logFormat'),
+      { skip: req => req.baseUrl.includes('healthcheck') }
+    )
+  );
+}
+
 app.use(config.get('server.baseUrl'), routes);
 
 export let server;
@@ -19,13 +32,25 @@ const start = () => new Promise((resolve, reject) => {
   });
 });
 const stop = () => new Promise((resolve, reject) => {
-  server.close((err) => {
-    if (err) {
-      reject(err);
+  server.close((error) => {
+    if (error) {
+      reject(error);
     } else {
       resolve('Express Server stopped');
     }
   });
 });
 
-export default { start, stop };
+application.onStart(() => {
+  start()
+    .then(message => console.log(message))
+    .then(() => console.log(`${config.get('appName')} started!`))
+    .catch((error: Error) => {
+      console.error(error);
+      Raven.captureException(error);
+      application.shutdown();
+    });
+});
+application.onShutdown(() => stop());
+
+export { start, stop };

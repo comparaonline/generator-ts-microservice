@@ -1,21 +1,18 @@
 import { KafkaServer } from '@comparaonline/event-streamer';
 import * as config from 'config';
+import * as Raven from 'raven';
 import { router } from './router';
+import { application } from '../application';
 
-export const server = new KafkaServer(router, config.get('kafka'));
+export const kafkaServer = new KafkaServer(router, config.get('kafka'));
 
-const start = () => Promise.resolve(server.start())
-  .then(() => 'KafkaServer started');
-
-const stop = () => new Promise((resolve, reject) => {
-  server.stop()
-    .catch((error: Error) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve('KafkaServer stopped');
-      }
-    });
+application.onStart(() => {
+  kafkaServer.start();
+  kafkaServer.on('error', (error) => {
+    console.error(error);
+    Raven.captureException(error);
+    application.shutdown();
+  });
 });
 
-export default { start, stop };
+application.onShutdown(() => kafkaServer.stop());
