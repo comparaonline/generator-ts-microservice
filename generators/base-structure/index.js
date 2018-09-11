@@ -40,5 +40,9 @@ module.exports = class extends Generator {
       this.templatePath('initialization'),
       this.destinationPath('src/initialization')
     )
+    this.fs.copy(
+      this.templatePath('application.ts'),
+      this.destinationPath('src/application.ts')
+    )
   }
 };
