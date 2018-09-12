@@ -5,9 +5,8 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": [
-      "es7",
       "dom",
-      "es2017.object"
+      "es2017"
     ],
     "module": "commonjs",
     "moduleResolution": "node",
@@ -16,7 +15,7 @@
     "sourceMap": true,
     "suppressImplicitAnyIndexErrors": true,
     "strictNullChecks": true,
-    "target": "es6"
+    "target": "es2017"
   },
   "include": [
     "./src/**/*.ts",
