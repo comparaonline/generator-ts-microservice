@@ -4,6 +4,7 @@ import * as config from 'config';
 import * as Raven from 'raven';
 import routes from './routes';
 import { application } from '../application';
+import { Server } from 'http';
 
 export const app = express();
 
@@ -20,10 +21,10 @@ if (config.util.getEnv('NODE_CONFIG_ENV') !== 'test') {
 
 app.use(config.get('server.baseUrl'), routes);
 
-export let server;
+export let server: Server;
 
 const start = () => new Promise((resolve, reject) => {
-  server = app.listen(config.get('server.port'), (error) => {
+  server = app.listen(config.get('server.port'), (error: Error) => {
     if (error) {
       reject(error);
     } else {
@@ -32,7 +33,7 @@ const start = () => new Promise((resolve, reject) => {
   });
 });
 const stop = () => new Promise((resolve, reject) => {
-  server.close((error) => {
+  server.close((error: Error) => {
     if (error) {
       reject(error);
     } else {

@@ -2,7 +2,7 @@ import { KafkaInputEvent, KafkaOutputEvent } from '@comparaonline/event-streamer
 import * as config from 'config';
 
 export class Ping extends KafkaInputEvent {
-  build(args: {}) { }
+  build() { }
 }
 
 export class Pong extends KafkaOutputEvent {

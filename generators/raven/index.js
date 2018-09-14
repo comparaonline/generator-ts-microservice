@@ -10,6 +10,9 @@ module.exports = class extends Generator {
   static get dependencies() {
     return ['raven'];
   }
+  static get devDependencies() {
+    return ['@types/raven'];
+  }
   constructor(args, options) {
     super(args, options);
     fileHelper(this);

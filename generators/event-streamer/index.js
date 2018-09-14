@@ -54,7 +54,7 @@ module.exports = class extends Generator {
     try {
       this.fs.copy(
         this.templatePath(`event-server/actions/__tests__/ping-action.${this._testFramework()}.ts`),
-        this.destinationPath('src/event-server/actions/__tests__/ping-action.ts')
+        this.destinationPath('src/event-server/actions/__tests__/ping-action.test.ts')
       );
     } catch (e) {
       this.log.error(`Error!!! ${e.message}`);
