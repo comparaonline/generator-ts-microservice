@@ -5,11 +5,11 @@ class Application {
   private startHandlers: Function[] = [];
   private shutdownHandlers: Function[] = [];
 
-  onStart(handler) {
+  onStart(handler: Function) {
     this.startHandlers.push(handler);
   }
 
-  onShutdown(handler) {
+  onShutdown(handler: Function) {
     this.shutdownHandlers.push(handler);
   }
 

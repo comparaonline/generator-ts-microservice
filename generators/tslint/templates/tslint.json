@@ -7,7 +7,6 @@
     ],
     "no-irregular-whitespace": true,
     "no-trailing-whitespace": true,
-    "no-unused-variable": true,
     "strict-boolean-expressions": false,
     "import-name": false,
     "trailing-comma": [
