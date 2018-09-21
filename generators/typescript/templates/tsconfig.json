@@ -2,6 +2,12 @@
   "compilerOptions": {
     "outDir": "build",
     "rootDir": "./src",
+    "baseUrl": "./",
+    "paths": {
+      "*": [
+        "/src/declarations"
+      ]
+    },
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": [
