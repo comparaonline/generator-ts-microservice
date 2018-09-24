@@ -13,7 +13,8 @@ module.exports = class extends Generator {
 
     const pkg = extend({
       scripts: {
-        test: 'NODE_CONFIG_ENV=test mocha',
+        test: 'TS_NODE_FILES=true NODE_CONFIG_ENV=test mocha',
+        'test:fast': 'TS_NODE_FILES=true NODE_CONFIG_ENV=test mocha',
         pretest: this._preTest()
       }
     }, currentPkg);
