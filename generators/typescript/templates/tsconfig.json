@@ -2,6 +2,12 @@
   "compilerOptions": {
     "outDir": "build",
     "rootDir": "./src",
+    "baseUrl": "./",
+    "paths": {
+      "*": [
+        "/src/declarations"
+      ]
+    },
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": [
@@ -20,7 +26,6 @@
     "target": "es2017"
   },
   "include": [
-    "./src/**/*.ts",
-    "./src/**/*.tsx"
+    "./src/**/*"
   ]
 }

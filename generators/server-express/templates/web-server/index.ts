@@ -14,7 +14,7 @@ if (config.util.getEnv('NODE_CONFIG_ENV') !== 'test') {
   app.use(
     logger(
       config.get('server.logFormat'),
-      { skip: req => req.baseUrl.includes('healthcheck') }
+      { skip: req => (req.baseUrl || req.originalUrl).includes('healthcheck') }
     )
   );
 }

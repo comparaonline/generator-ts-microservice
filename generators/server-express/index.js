@@ -32,8 +32,8 @@ module.exports = class extends Generator {
     );
     mkdirp.sync(this.destinationPath('src/declarations'));
     this.fs.copy(
-      this.templatePath('declarations/express-healthcheck.d.ts'),
-      this.destinationPath('src/declarations/express-healthcheck.d.ts')
+      this.templatePath('declarations'),
+      this.destinationPath('src/declarations')
     );
   }
 };
