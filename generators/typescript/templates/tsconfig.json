@@ -1,18 +1,13 @@
 {
   "compilerOptions": {
     "outDir": "build",
-    "rootDir": "./src",
-    "baseUrl": "./",
-    "paths": {
-      "*": [
-        "/src/declarations"
-      ]
-    },
+    "rootDir": "src",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "lib": [
       "dom",
-      "es2017"
+      "es2017",
+      "esnext.asynciterable"
     ],
     "module": "commonjs",
     "moduleResolution": "node",
@@ -23,9 +18,10 @@
     "sourceMap": true,
     "suppressImplicitAnyIndexErrors": true,
     "strictNullChecks": true,
-    "target": "es2017"
+    "target": "es2017",
+    "resolveJsonModule": true
   },
   "include": [
-    "./src/**/*"
+    "src/**/*"
   ]
 }

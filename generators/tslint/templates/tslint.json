@@ -1,10 +1,7 @@
 {
   "extends": "tslint-config-airbnb",
   "rules": {
-    "array-type": [
-      true,
-      "array-simple"
-    ],
+    "array-type": false,
     "no-irregular-whitespace": true,
     "no-trailing-whitespace": true,
     "strict-boolean-expressions": false,
@@ -36,5 +33,10 @@
     "new-parens": true,
     "no-consecutive-blank-lines": true,
     "quotemark": [true, "single"]
+  },
+  "linterOptions": {
+    "exclude": [
+      "**/*.json"
+    ]
   }
 }
