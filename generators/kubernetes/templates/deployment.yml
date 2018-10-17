@@ -4,6 +4,11 @@ metadata:
   name: <%= microserviceName %>-deployment
 spec:
   replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 50%
+    type: RollingUpdate
   template:
     metadata:
       labels:
@@ -21,8 +26,9 @@ spec:
         ports:
         - containerPort: 4000
         resources:
-          limits:
-            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
         livenessProbe:
           httpGet:
             path: /<%= microserviceName %>/healthcheck
