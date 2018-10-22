@@ -16,6 +16,7 @@
     "noUnusedParameters": true,
     "removeComments": false,
     "sourceMap": true,
+    "inlineSources": true,
     "suppressImplicitAnyIndexErrors": true,
     "strictNullChecks": true,
     "target": "es2017",
