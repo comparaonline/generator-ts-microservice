@@ -9,7 +9,7 @@ services:
       - NODE_ENV=development
       - NODE_CONFIG_ENV=development
       - >
-        NODE_CONFIG={   
+        NODE_CONFIG={
           "kafka": {
             "broker": "kafka:9092"
           },
@@ -20,7 +20,7 @@ services:
       - default
     ports:
       - "4000:4000"
-    command: "yarn watch"
+    command: "yarn watch start:dev"
     volumes:
       - ".:/code"
       - "/code/node_modules"

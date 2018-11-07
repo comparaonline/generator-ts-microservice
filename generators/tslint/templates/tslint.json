@@ -13,7 +13,8 @@
         "singleline": "never"
       }
     ],
-    "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case"],
+    "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case",
+      "allow-leading-underscore"],
     "whitespace": [true, "check-separator"],
     "member-ordering": [true, {"order": "fields-first"}],
     "no-magic-numbers": true,

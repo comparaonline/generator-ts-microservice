@@ -1,8 +1,7 @@
 'use strict';
-const _ = require('lodash');
-const extend = _.merge;
-const mkdirp = require('mkdirp');
 const Generator = require('yeoman-generator');
+const mkdirp = require('mkdirp');
+const addScript = require('../../helpers/add-script');
 
 module.exports = class extends Generator {
   static get dependencies() {
@@ -25,18 +24,9 @@ module.exports = class extends Generator {
       this.destinationPath('tsconfig.json')
     );
 
-    const currentPkg = this.fs.readJSON(this.destinationPath('package.json'), {});
-
-    const pkg = extend({
-      scripts: {
-        compile: 'tsc',
-        clean: 'rm -rf build/*',
-        start: 'node ./build',
-        watch: 'nodemon -e ts -w ./src -x yarn watch:serve',
-        'watch:serve': 'ts-node --files --inspect=9000 src/index.ts'
-      }
-    }, currentPkg);
-
-    this.fs.writeJSON(this.destinationPath('package.json'), pkg);
+    addScript(this, 'compile', 'tsc');
+    addScript(this, 'clean', 'rm -rf build/*');
+    addScript(this, 'start', 'node build');
+    addScript(this, 'start:dev', 'ts-node --files --inspect=9000 src/index.ts');
   }
 };

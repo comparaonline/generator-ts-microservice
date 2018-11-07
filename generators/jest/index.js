@@ -1,20 +1,17 @@
 'use strict';
-const _ = require('lodash');
-const extend = _.merge;
 const Generator = require('yeoman-generator');
+const addScript = require('../../helpers/add-script');
+const extendPackage = require('../../helpers/extend-package');
 
 module.exports = class extends Generator {
   static get devDependencies() {
     return ['jest', '@types/jest', 'ts-jest'];
   }
   writing() {
-    const currentPkg = this.fs.readJSON(this.destinationPath('package.json'), {});
+    addScript(this, 'test', 'jest');
+    addScript(this, 'coverage', 'jest --coverage --coverageReporters html');
 
-    const pkg = extend({
-      scripts: {
-        test: 'jest',
-        coverage: 'jest --coverage --coverageReporters html'
-      },
+    extendPackage({
       jest: {
         forceExit: true,
         mapCoverage: true,
@@ -37,9 +34,8 @@ module.exports = class extends Generator {
         },
         testRegex: 'src(/.*)?/__tests__/[^/]*\\.(ts|tsx|js)$'
       }
-    }, currentPkg);
+    });
 
-    this.fs.writeJSON(this.destinationPath('package.json'), pkg);
 
     this.fs.copy(
       this.templatePath('docker-compose.test.yml'),
