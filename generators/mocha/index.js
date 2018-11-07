@@ -1,7 +1,6 @@
 'use strict';
-const _ = require('lodash');
-const extend = _.merge;
 const Generator = require('yeoman-generator');
+const addScript = require('../../helpers/add-script');
 const mkdirp = require('mkdirp');
 
 module.exports = class extends Generator {
@@ -9,17 +8,11 @@ module.exports = class extends Generator {
     return ['mocha', 'chai', '@types/mocha', '@types/chai'];
   }
   writing() {
-    const currentPkg = this.fs.readJSON(this.destinationPath('package.json'), {});
-
-    const pkg = extend({
-      scripts: {
-        test: 'TS_NODE_FILES=true NODE_CONFIG_ENV=test mocha src/**/__tests__/**/*.test.{ts,tsx}',
-        'test:fast': 'TS_NODE_FILES=true NODE_CONFIG_ENV=test mocha src/**/__tests__/**/*.test.{ts,tsx}',
-        pretest: this._preTest()
-      }
-    }, currentPkg);
-
-    this.fs.writeJSON(this.destinationPath('package.json'), pkg);
+    const envs = 'TS_NODE_FILES=true NODE_CONFIG_ENV=test';
+    const test = `${envs} mocha 'src/**/__tests__/**/*.test.{ts,tsx}'`;
+    addScript(this, 'test', test);
+    addScript(this, 'test:fast', test);
+    addScript(this, 'pretest', this._preTest())
 
     mkdirp.sync(this.destinationPath('test'));
     this.fs.copyTpl(

@@ -1,10 +1,10 @@
 'use strict';
+const Generator = require('yeoman-generator');
 const mkdirp = require('mkdirp');
-const _ = require('lodash');
-const extend = _.merge;
+const { merge } = require('lodash');
 const yamlHelper = require('../../helpers/yaml-helper');
 const fileHelper = require('../../helpers/file-helper');
-const Generator = require('yeoman-generator');
+const addScript = require('../../helpers/add-script');
 
 module.exports = class extends Generator {
   static get dependencies() {
@@ -88,25 +88,19 @@ module.exports = class extends Generator {
   }
 
   _extendPackage() {
-    const currentPkg = this.fs.readJSON(this.destinationPath('package.json'), {});
-    const prestart = currentPkg.scripts.prestart;
-    const prewatch = currentPkg.scripts.prewatch;
+    const pkg = this.fs.readJSON(this.destinationPath('package.json'), {});
+    const prestart = ((pkg || {}).scripts || {}).prestart;
     const migrate = 'yarn migrate';
 
-    const pkg = extend({
-      scripts: {
-        migrate: 'sequelize db:migrate',
-        premigrate: 'bin/createdb',
-        sequelize: 'sequelize',
-        prestart: prestart ? `${prestart} && ${migrate}` : migrate,
-        prewatch: prewatch ? `${prewatch} && ${migrate}` : migrate
-      }
-    }, currentPkg);
-    this.fs.writeJSON(this.destinationPath('package.json'), pkg);
+    addScript(this, 'migrate', 'sequelize db:migrate');
+    addScript(this, 'premigrate', 'bin/createdb');
+    addScript(this, 'sequelize', 'sequelize');
+    addScript(this, 'prestart', migrate);
+    addScript(this, 'prestart:dev', migrate);
   }
 
   _extendConfig() {
-    const defaultConfig = extend(
+    const defaultConfig = merge(
       {
         sequelize: {
           username: "user",
@@ -119,7 +113,7 @@ module.exports = class extends Generator {
       },
       this.fs.readJSON(this.destinationPath('config/default.json'), {})
     );
-    const testConfig = extend(
+    const testConfig = merge(
       {
         sequelize: {
           database: `${this.options.name}-test`,

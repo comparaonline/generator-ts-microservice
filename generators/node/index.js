@@ -1,7 +1,7 @@
 'use strict';
-const _ = require('lodash');
-const extend = _.merge;
 const Generator = require('yeoman-generator');
+const { merge, isObject, isString } = require('lodash');
+const extendPackage = require('../../helpers/extend-package');
 
 module.exports = class extends Generator {
   constructor(args, options) {
@@ -30,18 +30,18 @@ module.exports = class extends Generator {
       private: this.pkg.private
     };
 
-    if (_.isObject(this.pkg.author)) {
+    if (isObject(this.pkg.author)) {
       this.props.authorName = this.pkg.author.name;
       this.props.authorEmail = this.pkg.author.email;
       this.props.authorUrl = this.pkg.author.url;
-    } else if (_.isString(this.pkg.author)) {
+    } else if (isString(this.pkg.author)) {
       const info = this._parseAuthor(this.pkg.author);
       this.props.authorName = info.name;
       this.props.authorEmail = info.email;
       this.props.authorUrl = info.url;
     }
 
-    this.props = extend(this.props, this.options);
+    this.props = merge(this.props, this.options);
   }
 
   _parseAuthor(author) {
@@ -93,17 +93,15 @@ module.exports = class extends Generator {
     ];
 
     return this.prompt(prompts).then(props => {
-      this.props = extend(this.props, props);
+      this.props = merge(this.props, props);
     });
   }
 
   writing() {
-    const currentPkg = this.fs.readJSON(this.destinationPath('package.json'), {});
-
     const keywords = Array.isArray(this.props.keywords) ? this.props.keywords
       : this.props.keywords.split(/\s*,\s*/g);
 
-    const pkg = extend({
+    extendPackage(this, {
       keywords,
       name: this.options.name,
       version: this.props.version || '1.0.0',
@@ -116,8 +114,6 @@ module.exports = class extends Generator {
         email: this.props.authorEmail,
         url: this.props.authorUrl
       }
-    }, currentPkg);
-
-    this.fs.writeJSON(this.destinationPath('package.json'), pkg);
+    });
   }
 };

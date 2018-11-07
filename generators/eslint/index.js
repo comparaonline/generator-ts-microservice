@@ -1,7 +1,6 @@
 'use strict';
-const _ = require('lodash');
-const extend = _.merge;
 const Generator = require('yeoman-generator');
+const addScript = require('../../helpers/add-script');
 
 module.exports = class extends Generator {
   static get devDependencies() {
@@ -12,15 +11,7 @@ module.exports = class extends Generator {
       this.templatePath('.eslintrc'),
       this.destinationPath('.eslintrc')
     );
-    const currentPkg = this.fs.readJSON(this.destinationPath('package.json'), {});
-
-    const pkg = extend({
-      scripts: {
-        eslint: 'eslint "**/*.js"',
-        pretest: 'yarn eslint',
-      }
-    }, currentPkg);
-
-    this.fs.writeJSON(this.destinationPath('package.json'), pkg);
+    addScript(this, 'eslint', 'eslint "**/*.js"');
+    addScript(this, 'pretest', 'yarn eslint');
   }
 };
