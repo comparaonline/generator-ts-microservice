@@ -113,7 +113,8 @@ module.exports = class extends Generator {
           password: "pass",
           database: this.options.name,
           host: "postgres",
-          dialect: "postgresql"
+          dialect: "postgresql",
+          operatorsAliases: false
         }
       },
       this.fs.readJSON(this.destinationPath('config/default.json'), {})
