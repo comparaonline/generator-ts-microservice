@@ -9,6 +9,7 @@ module.exports = class extends Generator {
   }
   writing() {
     addScript(this, 'watch', 'nodemon -x yarn');
+    addScript(this, 'watch:cmd', 'nodemon -x');
     extendPackage(this, {
       nodemonConfig: {
         execMap: {
