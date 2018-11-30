@@ -1,4 +1,4 @@
-FROM node:8-alpine AS base
+FROM node:8.12-alpine AS base
 WORKDIR /code
 EXPOSE 4000
 <%= [...new Set(base)].join('\n') %>
