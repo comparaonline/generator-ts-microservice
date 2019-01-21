@@ -27,7 +27,7 @@ module.exports = class extends Generator {
       {
         name: 'dsn',
         message: 'Sentry.io DSN',
-        default: this.originalConfig.raven.dsn
+        default: (this.originalConfig.raven || { dsn: false }).dsn
       }
     ];
     return this.prompt(prompts).then(props => {
