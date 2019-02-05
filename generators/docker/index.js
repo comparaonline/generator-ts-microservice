@@ -42,6 +42,7 @@ module.exports = class extends Generator {
   _dockerOptions() {
     const options = {
       microserviceName: this.options.name,
+      dependencies: ['bash', 'make', 'g++', 'python'],
       base: [],
       files: [],
       folders: []
@@ -59,12 +60,15 @@ module.exports = class extends Generator {
   }
 
   _addEventStreamer(options) {
-    if (this.options.hasDependency('@comparaonline/event-streamer')) {
+    if (this.options.hasDependency('event-streamer')) {
       options.base = (options.base || []).concat([
-        'ENV BUILD_LIBRDKAFKA=0',
-        'RUN apk add --no-cache \\',
-        '  libressl --repository http://dl-cdn.alpinelinux.org/alpine/v3.7/main \\',
-        '  librdkafka-dev --repository http://dl-cdn.alpinelinux.org/alpine/v3.7/community'
+        'RUN apk --no-cache add ca-certificates'
+      ]);
+      options.dependencies = (options.dependencies || []).concat([
+        'lz4-dev',
+        'musl-dev',
+        'cyrus-sasl-dev',
+        'openssl-dev'
       ]);
     }
   }

@@ -4,7 +4,11 @@ import * as Raven from 'raven';
 import { router } from './router';
 import { application } from '../application';
 
-export const kafkaServer = new KafkaServer(router, config.get('kafka'));
+export const kafkaServer = new KafkaServer(
+  router,
+  config.get('kafka'),
+  config.get('kafka.rdConfig')
+);
 
 application.onStart(() => {
   kafkaServer.start();
