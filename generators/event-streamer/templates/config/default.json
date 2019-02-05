@@ -1,0 +1,9 @@
+{
+  "kafka": {
+    "broker": "localhost:9092",
+    "consumerTopics": [
+      "kafka_topic"
+    ],
+    "producerTopic": "kafka_topic"
+  }
+}

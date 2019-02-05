@@ -4,7 +4,7 @@ EXPOSE 4000
 <%= [...new Set(base)].join('\n') %>
 
 FROM base AS build
-RUN apk add --no-cache bash make g++ python
+RUN apk add --no-cache <%= [...new Set(dependencies)].join(' \\\n  ') %>
 COPY package.json yarn.lock ./
 RUN yarn install --production=false
 COPY tsconfig.json <%= [...new Set(files)].join(' ') %> ./

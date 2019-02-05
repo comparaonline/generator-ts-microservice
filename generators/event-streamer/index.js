@@ -1,7 +1,7 @@
 'use strict';
 const mkdirp = require('mkdirp');
-const _ = require('lodash');
-const extend = _.merge;
+const { merge } = require('lodash');
+const jsonExtend = require('../../helpers/json-extend');
 const yamlHelper = require('../../helpers/yaml-helper');
 const fileHelper = require('../../helpers/file-helper');
 const Generator = require('yeoman-generator');
@@ -24,6 +24,37 @@ module.exports = class extends Generator {
     });
     yamlHelper(this);
     fileHelper(this);
+  }
+
+  prompting() {
+    const def = { rdConfig: { } };
+    const config = this.fs.readJSON(
+      this.destinationPath('config/production.json'),
+      {}
+    ) || {};
+    const prompts = [
+      {
+        name: 'username',
+        message: 'Production Kafka Username (or Key)',
+        default: ((config || {}).rdConfig || {})['sasl.username'],
+        store: true
+      },
+      {
+        name: 'password',
+        message: 'Production Kafka Password (or Secret Key)',
+        default: ((config || {}).rdConfig || {})['sasl.password'],
+        store: true
+      },
+      {
+        name: 'broker',
+        message: 'Production Kafka Broker (host:port)',
+        default: (config || {}).broker,
+        store: true
+      }
+    ];
+  return this.prompt(prompts).then(props => {
+      this.props = merge(this.props, props);
+    });
   }
 
   writing() {
@@ -110,20 +141,19 @@ module.exports = class extends Generator {
   }
 
   _extendConfig() {
-    const config = extend(
-      {
-        "kafka": {
-          "groupId": this.options.name,
-          "broker": "localhost:9092",
-          "consumerTopics": [
-            "kafka_topic"
-          ],
-          "producerTopic": "kafka_topic"
+    const extend = jsonExtend(this);
+    extend('config/default.json', 'config/default.json', {
+      kafka: { groupId: this.options.name }
+    });
+    extend('config/production.json', 'config/production.json', {
+      kafka: {
+        broker: this.props.broker,
+        rdConfig: {
+          "sasl.username": this.props.username,
+          "sasl.password": this.props.password
         }
-      },
-      this.fs.readJSON(this.destinationPath('config/default.json'), {})
-    );
-    this.fs.writeJSON(this.destinationPath('config/default.json'), config);
+       }
+    });
   }
 
   end() {

@@ -6,6 +6,7 @@ services:
       context: .
       target: build
     environment:
+      - TS_NODE_FILES=true
       - NODE_ENV=development
       - NODE_CONFIG_ENV=development
       - >
@@ -20,7 +21,7 @@ services:
       - default
     ports:
       - "4000:4000"
-    command: "yarn watch:cmd ts-node --files --inspect=9000 src/index.ts"
+    command: "yarn watch:cmd node --inspect=9000 -r ts-node/register src/index.ts"
     volumes:
       - ".:/code"
       - "/code/node_modules"
