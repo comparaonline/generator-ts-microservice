@@ -30,7 +30,7 @@ class Application {
 
   shutdown() {
     console.log(`Shutting down ${config.get('appName')}`);
-    Promise.all(this.shutdownHandlers)
+    Promise.all(this.shutdownHandlers.map(handler => handler()))
       .then(results => results.forEach(message => console.log(message)))
       .then(() => console.log(`${config.get('appName')} stopped!`))
       .catch((error: Error) => {
