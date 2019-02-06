@@ -7,7 +7,7 @@ import { application } from '../application';
 export const kafkaServer = new KafkaServer(
   router,
   config.get('kafka'),
-  config.get('kafka.rdConfig')
+  config.has('kafka.rdConfig') ? config.get('kafka.rdConfig') : {}
 );
 
 application.onStart(() => {
