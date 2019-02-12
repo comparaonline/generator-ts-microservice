@@ -62,13 +62,11 @@ module.exports = class extends Generator {
   _addEventStreamer(options) {
     if (this.options.hasDependency('event-streamer')) {
       options.base = (options.base || []).concat([
-        'RUN apk --no-cache add ca-certificates'
-      ]);
-      options.dependencies = (options.dependencies || []).concat([
-        'lz4-dev',
-        'musl-dev',
-        'cyrus-sasl-dev',
-        'openssl-dev'
+        'RUN apk --no-cache add ca-certificates \\',
+        '  lz4-dev \\',
+        '  musl-dev \\',
+        '  cyrus-sasl-dev \\',
+        '  openssl-dev'
       ]);
     }
   }
