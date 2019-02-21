@@ -105,6 +105,7 @@ module.exports = class extends Generator {
       '../docker',
       '../kubernetes',
       '../raven',
+      '../datadog',
       'generator-node/generators/editorconfig',
       'generator-node/generators/git',
       this.props.ciPlatform,
