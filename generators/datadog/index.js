@@ -33,10 +33,6 @@ module.exports = class extends Generator {
         default: this.defaultProjectName,
         choices: [
           {
-            name: `${this.defaultProjectName} (default app name)`,
-            value: this.defaultProjectName
-          },
-          {
             name: 'Travel Assistance',
             value: 'travel-assistance'
           },
@@ -55,6 +51,10 @@ module.exports = class extends Generator {
           {
             name: 'Leadgeneration',
             value: 'leadgen'
+          },
+          {
+            name: `${this.defaultProjectName} (default app name)`,
+            value: this.defaultProjectName
           }
         ]
       }
