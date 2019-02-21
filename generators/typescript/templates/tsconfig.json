@@ -20,7 +20,8 @@
     "suppressImplicitAnyIndexErrors": true,
     "strictNullChecks": true,
     "target": "es2017",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "src/**/*"
