@@ -1,4 +1,4 @@
-import * as tracer from 'dd-trace';
+import tracer from 'dd-trace';
 import * as config from 'config';
 
 if (config.util.getEnv('DD_AGENT_HOST')) {

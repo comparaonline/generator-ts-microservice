@@ -37,16 +37,8 @@ module.exports = class extends Generator {
             value: 'travel-assistance'
           },
           {
-            name: 'Car Insurance CL',
-            value: 'car-insurance-cl'
-          },
-          {
-            name: 'Car Insurance BR',
-            value: 'car-insurance-br'
-          },
-          {
-            name: 'Car Insurance CO',
-            value: 'car-insurance-co'
+            name: 'Car Insurance',
+            value: 'car-insurance'
           },
           {
             name: 'Leadgeneration',
