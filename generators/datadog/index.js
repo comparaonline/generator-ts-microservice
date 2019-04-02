@@ -6,11 +6,10 @@ const Generator = require('yeoman-generator');
 
 module.exports = class extends Generator {
   static get dependencies() {
-    return ['dd-trace'];
-  }
-
-  static get devDependencies() {
-    return ['@types/dd-trace'];
+    return [
+      'dd-trace',
+      'opentracing'
+    ];
   }
 
   constructor(args, options) {
@@ -20,7 +19,12 @@ module.exports = class extends Generator {
     this.defaultProjectName = options.name;
     this.originalConfig = this.fs.readJSON(
       this.destinationPath('config/default.json'),
-      { datadog: { projectName: this.defaultProjectName } }
+      {
+        datadog: {
+          projectName: this.defaultProjectName,
+          host: 'datadog'
+        }
+      }
     );
   }
 
