@@ -11,4 +11,4 @@ export const sequelize = new Sequelize({
   ]
 });
 
-application.onShutdown(() => sequelize.close());
+application.onShutdown(() => sequelize.connectionManager.close());

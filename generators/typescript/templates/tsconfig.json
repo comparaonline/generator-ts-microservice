@@ -21,7 +21,8 @@
     "strictNullChecks": true,
     "target": "es2017",
     "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
   },
   "include": [
     "src/**/*"
