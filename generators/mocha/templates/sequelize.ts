@@ -1,8 +1,9 @@
 import { sequelize } from '../initialization/sequelize';
 
-const models = Object.values(sequelize.models);
+const models = Object.values(sequelize._);
 
-beforeEach(async () => Promise.all(models.map(model =>
-  model.truncate({ cascade: true })
+beforeEach(async () => Promise.all(
+  Object.values(models).map((model: any) =>
+    model.truncate({ cascade: true })
 )));
-after(() => sequelize.close());
+after(() => sequelize.connectionManager.close());
