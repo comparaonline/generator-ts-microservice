@@ -143,7 +143,10 @@ module.exports = class extends Generator {
   _extendConfig() {
     const extend = jsonExtend(this);
     extend('config/default.json', 'config/default.json', {
-      kafka: { groupId: this.options.name }
+      kafka: {
+        groupId: this.options.name,
+        projectName: this.option.name
+      }
     });
     extend('config/production.json', 'config/production.json', {
       kafka: {
