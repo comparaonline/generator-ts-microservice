@@ -1,74 +1,112 @@
 pipeline {
-    agent any
-    stages {
-      stage('Prepare') {
-        steps {
-          sh 'docker --version'
-          sh 'docker-compose --version'
-          sh 'docker network inspect confluent_kafka > /dev/null 2>&1 ||\
-              docker network create confluent_kafka'
-          sh 'git config --global user.email "jenkins@comparaonline.com"'
-          sh 'git config --global user.name "Jenkins"'
-        }
-      }
-      stage('Build') {
-          steps {
-              sh 'docker-compose build'
-          }
-      }
-      stage('Test') {
-          steps {
-              sh 'docker-compose run --rm app yarn test'
-          }
-      }
-      stage ('Deploy') {
-        when {
-          expression {
-            GIT_BRANCH = sh(returnStdout: true, script: 'echo $BRANCH_NAME').trim()
-            return GIT_BRANCH == 'release' || GIT_BRANCH == 'master'
-          }
-        }
-        steps {
-          script {
-            GIT_BRANCH = sh(returnStdout: true, script: 'echo $BRANCH_NAME').trim()
-            STAGE = GIT_BRANCH == 'master' ? 'production' : 'staging';
-            sh "STAGE=${STAGE} deploy -k /home/jenkins/google-cloud-sdk/bin/kubectl \
-              -g /home/jenkins/google-cloud-sdk/bin/gcloud \
-              <%= microserviceName %>"
-          }
-        }
-      }
-      stage ('Accept Release') {
-        when {
-          expression {
-            GIT_BRANCH = sh(returnStdout: true, script: 'echo $BRANCH_NAME').trim()
-            return GIT_BRANCH == 'release'
-          }
-        }
-        steps {
-          script {
-            env.PROMOTE_TO_PRODUCTION = input message: 'Accept changes and deploy to PRODUCTION?',
-                parameters: [choice(name: 'Deploy to PRODUCTION', choices: 'no\nyes', description: 'Choose "yes" if you want to DEPLOY TO PRODUCTION')]
-          }
-        }
-      }
-      stage ('Merge to Master') {
-        when {
-          environment name: 'PROMOTE_TO_PRODUCTION', value: 'yes';
-        }
-        steps {
-          sh 'git remote set-branches --add origin master'
-          sh 'git fetch'
-          sh 'git checkout master || git checkout -b master origin/master'
-          sh 'git pull'
-          sh 'git merge origin/release'
-          sh 'git push origin master'
-        }
+  agent any
+  options {
+    timeout(time: 1, unit: 'HOURS')
+  }
+  stages {
+    stage('Initialize') {
+      steps {
+        initialize_function()
       }
     }
-    post {
-      always {
-        sh 'docker-compose stop'
+    stage('Test') {
+      steps {
+        test_function()
       }
     }
+    stage('Build') {
+      when {
+        anyOf {
+          branch 'release'
+          branch 'master'
+        }
+      }
+      steps {
+        build_function()
+      }
+    }
+    stage('Deploy') {
+      when {
+        anyOf {
+          branch 'release'
+          branch 'master'
+        }
+      }
+      steps {
+        deploy_function()
+      }
+    }
+    stage('Accept Release') {
+      when {
+        anyOf {
+          branch 'release'
+        }
+      }
+      steps {
+        accept_release_function()
+      }
+    }
+    stage('Merge to Destination') {
+      when {
+        environment name: 'PROMOTE_ENVIRONMENT', value: 'yes';
+      }
+      steps {
+        merge_function()
+      }
+    }
+  }
+  post {
+    always {
+      cleanup_function()
+    }
+  }
+}
+
+def initialize_function() {
+  // PLEASE ONLY MODIFY VALUES IN THIS FUNCTION!!!!!
+  if(env.BRANCH_NAME == 'release') {
+      env.DESTINATION_BRANCH = 'master'
+      env.DESTINATION_ENVIRONMENT = 'PRODUCTION'
+  }
+  
+  sh 'docker --version'
+  sh 'docker-compose --version'
+  sh 'docker network inspect confluent_kafka > /dev/null 2>&1 || docker network create confluent_kafka'
+  sh 'git config --global user.email "jenkins@comparaonline.com"'
+  sh 'git config --global user.name "Jenkins"'
+  
+  env.APP_NAME = <%= microserviceName %>
+  env.STAGE = env.BRANCH_NAME
+}
+
+def test_function() {
+  sh 'docker-compose run --rm app yarn test'
+}
+
+def build_function() {
+  sh 'docker-compose build'
+}
+
+def deploy_function() {
+  sh "STAGE=$STAGE deploy -k /home/jenkins/google-cloud-sdk/bin/kubectl -g /home/jenkins/google-cloud-sdk/bin/gcloud $APP_NAME"
+}
+
+def accept_release_function() {
+  slackSend channel: "#release", color: "warning", message: "Accept changes and deploy: ${env.APP_NAME}:${env.BRANCH_NAME} ${env.BUILD_NUMBER} Go to: ${env.BUILD_URL}"
+  env.PROMOTE_ENVIRONMENT = input message: 'Accept changes and deploy to ' + env.DESTINATION_ENVIRONMENT + '?',
+  parameters: [choice(name: 'Deploy to ' + env.DESTINATION_ENVIRONMENT, choices: 'no\nyes', description: 'Choose "yes" if you want to DEPLOY TO ' + env.DESTINATION_ENVIRONMENT)]
+}
+
+def merge_function() {
+  sh 'git stash'
+  sh 'git remote set-branches --add origin $DESTINATION_BRANCH'
+  sh 'git fetch'
+  sh 'git checkout $DESTINATION_BRANCH || git checkout -b $DESTINATION_BRANCH origin/$DESTINATION_BRANCH'
+  sh 'git pull'
+  sh 'git merge origin/$BRANCH_NAME'
+  sh 'git push origin $DESTINATION_BRANCH'
+}
+
+def cleanup_function() {
+  sh 'docker-compose rm -sfv' 
 }
