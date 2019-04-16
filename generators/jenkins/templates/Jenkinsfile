@@ -75,7 +75,7 @@ def initialize_function() {
   sh 'git config --global user.email "jenkins@comparaonline.com"'
   sh 'git config --global user.name "Jenkins"'
   
-  env.APP_NAME = <%= microserviceName %>
+  env.APP_NAME = '<%= microserviceName %>'
   env.STAGE = env.BRANCH_NAME
 }
 
