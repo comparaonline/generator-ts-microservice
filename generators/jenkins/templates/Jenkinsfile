@@ -65,10 +65,14 @@ pipeline {
 def initialize_function() {
   // PLEASE ONLY MODIFY VALUES IN THIS FUNCTION!!!!!
   if(env.BRANCH_NAME == 'release') {
+      env.STAGE = 'staging'
       env.DESTINATION_BRANCH = 'master'
       env.DESTINATION_ENVIRONMENT = 'PRODUCTION'
   }
-  
+  else if(env.BRANCH_NAME == 'master') {
+    env.STAGE = 'production'
+  }
+    
   sh 'docker --version'
   sh 'docker-compose --version'
   sh 'docker network inspect confluent_kafka > /dev/null 2>&1 || docker network create confluent_kafka'
