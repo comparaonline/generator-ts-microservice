@@ -76,7 +76,7 @@ def initialize_function() {
   env.APP_NAME = "<%= microserviceName %>"
   env.DOCKER_SERVICE_NAME = "app"
   env.DOCKER_COMPOSE_FILENAME = "docker-compose.yml"
-  env.NETWORK_NAME = "confluent_kafka_${env.APP_NAME}"
+  env.DOCKER_NETWORK_NAME = "confluent_kafka"
   env.TEST_COMMAND = "yarn test"
 
   acceptance_message = "Accept changes and deploy: ${env.APP_NAME}:${env.BRANCH_NAME} ${env.BUILD_NUMBER} Go to: ${env.BUILD_URL}"
@@ -89,7 +89,7 @@ def initialize_function() {
 
   sh "docker --version"
   sh "docker-compose --version"
-  sh "docker network inspect $NETWORK_NAME > /dev/null 2>&1 || docker network create $NETWORK_NAME"
+  sh "docker network inspect $DOCKER_NETWORK_NAME > /dev/null 2>&1 || docker network create $DOCKER_NETWORK_NAME"
   sh 'git config --global user.email "jenkins@comparaonline.com"'
   sh 'git config --global user.name "Jenkins"'
 }
@@ -99,7 +99,7 @@ def test_function() {
 }
 
 def build_function() {
-  sh "docker-compose build"
+  sh "docker-compose -f $DOCKER_COMPOSE_FILENAME build"
 }
 
 def deploy_function() {
@@ -123,6 +123,6 @@ def merge_function() {
 }
 
 def cleanup_function() {
-  sh "docker-compose rm -sfv" 
-  sh "docker network rm $NETWORK_NAME"
+  sh "docker-compose -f $DOCKER_COMPOSE_FILENAME down --rmi all"
+  sh "docker-compose -f $DOCKER_COMPOSE_FILENAME rm -sfv"
 }
