@@ -7,4 +7,5 @@ services:
 networks:
   default: {}
   confluent_kafka:
+    name: ${NETWORK_NAME}
     external: true

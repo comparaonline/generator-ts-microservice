@@ -99,7 +99,7 @@ def test_function() {
 }
 
 def build_function() {
-  sh "docker-compose build"
+  sh "docker-compose -f $DOCKER_COMPOSE_FILENAME build"
 }
 
 def deploy_function() {
