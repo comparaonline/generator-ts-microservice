@@ -28,6 +28,8 @@ module.exports = class extends Generator {
     const additional = [];
     if (this.options.hasDependency('sequelize')) {
       additional.push('--file ./src/test-helpers/sequelize.ts');
+    } else if (this.options.hasDependency('typeorm')) {
+      additional.push('--file ./src/test-helpers/typeorm.ts');
     }
     return additional.toString('\n');
   }
@@ -38,6 +40,8 @@ module.exports = class extends Generator {
       pretest.push('yarn tslint');
     }
     if (this.options.hasDependency('sequelize')) {
+      pretest.push('NODE_CONFIG_ENV=test yarn migrate');
+    } else if (this.options.hasDependency('typeorm')) {
       pretest.push('NODE_CONFIG_ENV=test yarn migrate');
     }
     return pretest.join(' && ');
@@ -50,7 +54,13 @@ module.exports = class extends Generator {
       this.fs.copy(
         this.templatePath('sequelize.ts'),
         this.destinationPath('src/test-helpers/sequelize.ts')
-      )
+      );
+    } else if (this.options.hasDependency('typeorm')) {
+      mkdirp.sync(this.destinationPath('src/test-helpers'));
+      this.fs.copy(
+        this.templatePath('typeorm.ts'),
+        this.destinationPath('src/test-helpers/typeorm.ts')
+      );
     }
     return additionalParts.join('\n')
   }

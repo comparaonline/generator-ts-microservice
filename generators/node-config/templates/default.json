@@ -4,5 +4,9 @@
     "port": 4000,
     "baseUrl": "/<%= microserviceName %>",
     "logFormat": "tiny"
+  },
+  "datadog": {
+    "projectName": "<%= microserviceName %>",
+    "host": "datadog"
   }
 }

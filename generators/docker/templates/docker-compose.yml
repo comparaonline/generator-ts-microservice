@@ -15,6 +15,7 @@ services:
             "broker": "kafka:9092"
           },
           "sequelize": { "host": "postgres" },
+          "orm": { "host": "postgres" },
           "redis": { "host": "redis" }
         }
     networks:
