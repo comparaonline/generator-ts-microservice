@@ -8,7 +8,10 @@ const addScript = require('../../helpers/add-script');
 
 module.exports = class extends Generator {
   static get dependencies() {
-    return ['typeorm', 'reflect-metadata', '@types/node', 'pg'];
+    return ['typeorm', 'reflect-metadata', 'pg'];
+  }
+  static get devDependencies() {
+    return ['@types/node'];
   }
   constructor(args, options) {
     super(args, options);
