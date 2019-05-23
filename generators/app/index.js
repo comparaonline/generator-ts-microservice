@@ -33,7 +33,7 @@ module.exports = class extends Generator {
             value: '../mocha'
           },
           {
-            name: `Jest (${chalk.red('NOT RECOMMENDED!!!!')})`,
+            name: 'Jest',
             value: '../jest'
           }
         ]
