@@ -12,7 +12,9 @@ services:
       - >
         NODE_CONFIG={
           "kafka": {
-            "broker": "kafka:9092"
+            "global": {
+              "kafkaHost": "kafka:9092"
+            }
           },
           "sequelize": { "host": "postgres" },
           "redis": { "host": "redis" }

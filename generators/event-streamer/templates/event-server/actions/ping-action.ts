@@ -3,6 +3,6 @@ import { Pong } from '../events/ping-events';
 
 export class PingAction extends Action {
   async perform() {
-    this.emit(new Pong());
+    await this.emit(new Pong());
   }
 }

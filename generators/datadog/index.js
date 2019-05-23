@@ -8,8 +8,14 @@ module.exports = class extends Generator {
   static get dependencies() {
     return [
       'dd-trace',
-      'opentracing'
+      'opentracing',
+      'winston',
+      'express-winston'
     ];
+  }
+
+  static get devDependencies() {
+    return ['@types/express-winston', '@types/express-winston'];
   }
 
   constructor(args, options) {
@@ -21,8 +27,11 @@ module.exports = class extends Generator {
       this.destinationPath('config/default.json'),
       {
         datadog: {
-          projectName: this.defaultProjectName,
-          host: 'datadog'
+          host: 'datadog',
+          projectName: this.defaultProjectName
+        },
+        winston: {
+          format: 'simple'
         }
       }
     );
@@ -73,17 +82,36 @@ module.exports = class extends Generator {
       this.templatePath('datadog.ts'),
       this.destinationPath('src/initialization/datadog.ts')
     );
+
+    this.fs.copy(
+      this.templatePath('winston.ts'),
+      this.destinationPath('src/initialization/winston.ts')
+    )
   }
 
   _extendConfig() {
     const defaultConfig = merge(
       {
         datadog: {
-          projectName: this.props.projectName
+          projectName: this.props.projectName,
+          host: 'datadog'
+        },
+        winston: {
+          format: 'simple'
         }
       },
       this.fs.readJSON(this.destinationPath('config/default.json'), {})
     );
     this.fs.writeJSON(this.destinationPath('config/default.json'), defaultConfig);
+
+    const productionConfig = merge(
+      {
+        winston: {
+          format: 'json'
+        }
+      },
+      this.fs.readJSON(this.destinationPath('config/production.json'), {})
+    );
+    this.fs.writeJSON(this.destinationPath('config/production.json'), productionConfig);
   }
 };

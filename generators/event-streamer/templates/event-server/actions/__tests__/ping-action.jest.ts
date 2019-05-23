@@ -5,7 +5,7 @@ import { Pong } from '../../events/ping-events';
 describe('PingAction', () => {
   it('returns consumer data when pinged', async () => {
     const server = new TestServer(router);
-    server.input({ code: 'Ping' });
+    await server.input({ code: 'Ping' });
     const published = await server.emitted();
     expect(published).toHaveLength(1);
     expect(published[0]).toBeInstanceOf(Pong);

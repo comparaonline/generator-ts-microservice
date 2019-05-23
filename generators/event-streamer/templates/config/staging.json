@@ -1,0 +1,7 @@
+{
+  "kafka": {
+    "global": {
+      "kafkaHost": "kafka-staging:9092"
+    }
+  }
+}
