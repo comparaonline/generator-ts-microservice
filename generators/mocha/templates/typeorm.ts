@@ -7,7 +7,7 @@ const clearDb = async () => {
     const entities = conn.entityMetadatas;
     for(const entity of entities) {
       const repository = await conn.getRepository(entity.name);
-      await repository.query(`TRUNCATE TABLE ${entity.tableName };`);
+      await repository.query(`TRUNCATE TABLE "${entity.tableName}" CASCADE;`);
     }
   } catch(error) {
     console.error(error);
