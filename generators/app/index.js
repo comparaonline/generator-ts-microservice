@@ -33,7 +33,7 @@ module.exports = class extends Generator {
             value: '../mocha'
           },
           {
-            name: `Jest (${chalk.red('NOT RECOMMENDED!!!!')})`,
+            name: 'Jest',
             value: '../jest'
           }
         ]
@@ -60,7 +60,12 @@ module.exports = class extends Generator {
         type: 'checkbox',
         choices: [
           {
-            name: 'Sequelize ORM',
+            name: 'TypeORM',
+            value: '../typeorm',
+            checked: (this.pkg.dependencies || {}).typeorm !== undefined
+          },
+          {
+            name: `Sequelize ORM (${chalk.red('We should not using it anymore')})`,
             value: '../sequelize',
             checked: (this.pkg.dependencies || {}).sequelize !== undefined
           },

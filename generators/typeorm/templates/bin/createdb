@@ -1,0 +1,13 @@
+#!/usr/bin/env node
+const orm = require('config').orm;
+const { Client } = require('pg');
+
+const { username, password, database, host, dialect, port } = orm;
+const url = `${dialect}://${username}:${password}@${host}:${port}/postgres`;
+
+const client = new Client({ connectionString: url });
+client.connect()
+  .then(() => client.query(`CREATE DATABASE "${database}"`))
+  .then(() => process.stdout.write(`Database ${database} created!\n`))
+  .catch(() => process.stdout.write(`Database ${database} exists!\n`))
+  .then(() => client.end());

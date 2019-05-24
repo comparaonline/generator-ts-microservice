@@ -1,0 +1,16 @@
+services:
+  app:
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:9.6-alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    networks:
+      - default
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+volumes:
+  postgres: {}

@@ -100,7 +100,13 @@ module.exports = class extends Generator {
       this.fs.copy(
         this.templatePath('sequelize.ts'),
         this.destinationPath('src/test-helpers/sequelize.ts')
-      )
+      );
+    } else if (this._hasDependency('typeorm')) {
+      mkdirp.sync(this.destinationPath('src/test-helpers'));
+      this.fs.copy(
+        this.templatePath('typeorm.ts'),
+        this.destinationPath('src/test-helpers/typeorm.ts')
+      );
     }
     return additionalParts.join('\n')
   }
