@@ -6,14 +6,15 @@ import {
 } from 'winston';
 import * as config from 'config';
 
-const getFormat = () => {
-  switch(config.get('winston.format')) {
-    case 'simple':
-      return format.simple();
-    default:
-      return format.json();
-  }
+const getConfig = <T>(key: string, defaultValue: T): T =>
+  config.has(key) ? config.get(key) : defaultValue;
+
+const formats = {
+  simple: () => format.simple(),
+  default: () => format.json()
 };
+
+const getFormat = formats[getConfig('winston.format', 'default')];
 
 export const loggerConfig: LoggerOptions = {
   format: getFormat(),

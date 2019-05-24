@@ -30,7 +30,6 @@ class Application {
 
   shutdown() {
     console.log(`Shutting down ${config.get('appName')}`);
-    // tslint:disable-next-line: no-floating-promises
     Promise.all(this.shutdownHandlers.map(handler => handler()))
       .then(results => results.forEach(message => console.log(message)))
       .then(() => console.log(`${config.get('appName')} stopped!`))
