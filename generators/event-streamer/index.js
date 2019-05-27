@@ -12,7 +12,7 @@ module.exports = class extends Generator {
   }
 
   static get dependencies() {
-    return ['@comparaonline/event-streamer@^1.0.1'];
+    return ['@comparaonline/event-streamer@^3.1.0'];
   }
 
   constructor(args, options) {
@@ -24,37 +24,6 @@ module.exports = class extends Generator {
     });
     yamlHelper(this);
     fileHelper(this);
-  }
-
-  prompting() {
-    const def = { rdConfig: { } };
-    const config = this.fs.readJSON(
-      this.destinationPath('config/production.json'),
-      {}
-    ) || {};
-    const prompts = [
-      {
-        name: 'username',
-        message: 'Production Kafka Username (or Key)',
-        default: ((config || {}).rdConfig || {})['sasl.username'],
-        store: true
-      },
-      {
-        name: 'password',
-        message: 'Production Kafka Password (or Secret Key)',
-        default: ((config || {}).rdConfig || {})['sasl.password'],
-        store: true
-      },
-      {
-        name: 'broker',
-        message: 'Production Kafka Broker (host:port)',
-        default: (config || {}).broker,
-        store: true
-      }
-    ];
-  return this.prompt(prompts).then(props => {
-      this.props = merge(this.props, props);
-    });
   }
 
   writing() {
@@ -95,7 +64,7 @@ module.exports = class extends Generator {
 
   _testInitialization() {
     const additionalParts = [];
-    if (this._hasDependency('sequelize')) {
+    if (this._hasDependency('sequelize@4.41.0')) {
       mkdirp.sync(this.destinationPath('src/test-helpers'));
       this.fs.copy(
         this.templatePath('sequelize.ts'),
@@ -149,17 +118,12 @@ module.exports = class extends Generator {
   _extendConfig() {
     const extend = jsonExtend(this);
     extend('config/default.json', 'config/default.json', {
-      kafka: { groupId: this.options.name }
+      kafka: { consumer: { groupId: this.options.name } }
     });
-    extend('config/production.json', 'config/production.json', {
-      kafka: {
-        broker: this.props.broker,
-        rdConfig: {
-          "sasl.username": this.props.username,
-          "sasl.password": this.props.password
-        }
-       }
-    });
+
+    extend('config/staging.json', 'config/staging.json', {});
+
+    extend('config/production.json', 'config/production.json', {});
   }
 
   end() {

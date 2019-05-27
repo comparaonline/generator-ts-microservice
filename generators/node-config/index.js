@@ -25,7 +25,7 @@ module.exports = class extends Generator {
 
   writing() {
     mkdirp.sync('config');
-    const envs = ['default', 'test', 'development', 'qc', 'staging', 'production'];
+    const envs = ['default', 'test', 'development', 'staging', 'production'];
     envs.forEach(env => this._extendConfig(env));
     this.fs.copy(
       this.templatePath('gitignore'),

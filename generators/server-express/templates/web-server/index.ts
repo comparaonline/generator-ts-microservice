@@ -24,12 +24,10 @@ app.use(config.get('server.baseUrl'), routes);
 export let server: Server;
 
 const start = () => new Promise((resolve, reject) => {
-  server = app.listen(config.get('server.port'), (error: Error) => {
-    if (error) {
-      reject(error);
-    } else {
+  server = app.listen(config.get('server.port'), () => {
       resolve('Express Server started');
-    }
+  }).on('error', (error: Error) => {
+    reject(error);
   });
 });
 const stop = () => new Promise((resolve, reject) => {

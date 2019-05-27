@@ -5,6 +5,7 @@ import * as opentracing from 'opentracing';
 const baseConfig: TracerOptions = {
   service: config.get('appName'),
   env: process.env.NODE_CONFIG_ENV,
+  logInjection: true,
   tags: {
     environment: process.env.NODE_CONFIG_ENV,
     project: config.get('appName'),
@@ -26,6 +27,6 @@ const getDatadogConfig = (): TracerOptions => {
   };
 };
 
-const tracer = TraceProxy.init(getDatadogConfig());
+export const tracer = TraceProxy.init(getDatadogConfig());
 
 opentracing.initGlobalTracer(tracer);

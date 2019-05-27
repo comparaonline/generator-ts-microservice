@@ -1,9 +1,16 @@
 {
   "kafka": {
-    "broker": "localhost:9092",
-    "consumerTopics": [
-      "kafka_topic"
-    ],
-    "producerTopic": "kafka_topic"
+    "global": {
+      "kafkaHost": "localhost:9092"
+    },
+    "consumer": {
+      "groupId": "kafka_topic",
+      "topics": [
+        "kafka_topic"
+      ]
+    },
+    "producer": {
+      "defaultTopic": "kafka_topic"
+    }
   }
 }

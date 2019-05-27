@@ -33,7 +33,8 @@
     "import-spacing": true,
     "new-parens": true,
     "no-consecutive-blank-lines": true,
-    "quotemark": [true, "single"]
+    "quotemark": [true, "single"],
+    "no-floating-promises": true
   },
   "linterOptions": {
     "exclude": [
