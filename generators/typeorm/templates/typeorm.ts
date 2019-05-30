@@ -2,7 +2,7 @@ import * as config from 'config';
 import { createConnection, getConnection } from 'typeorm';
 import { application } from '../application';
 
-const orm = config.get('orm');
+const orm = config.get<object>('orm');
 export const connection = createConnection({
   ...orm,
   type: orm['type'],
@@ -13,7 +13,6 @@ export const connection = createConnection({
   migrations: [
     'src/migrations/*.ts',
     'build/migrations/*.js'
-  ],
-  synchronize: true
+  ]
 });
 application.onShutdown(() => getConnection().close());
