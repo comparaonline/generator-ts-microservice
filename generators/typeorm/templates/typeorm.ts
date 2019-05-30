@@ -13,7 +13,6 @@ export const connection = createConnection({
   migrations: [
     'src/migrations/*.ts',
     'build/migrations/*.js'
-  ],
-  synchronize: true
+  ]
 });
 application.onShutdown(() => getConnection().close());
