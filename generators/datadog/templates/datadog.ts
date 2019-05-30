@@ -18,7 +18,7 @@ const getDatadogConfig = (): TracerOptions => {
     return {
       ...baseConfig,
       debug: false,
-      hostname: config.get('datadog.host')
+      hostname: config.has('datadog.host') ? config.get('datadog.host') : 'datadog'
     };
   }
   return {

@@ -5,7 +5,6 @@ const url = `${dialect}://${username}:${password}@${host}:${port}/${database}`;
 module.exports = {
   url,
   type,
-  synchronize: true,
   entities: [
     `${__dirname}/build/entities/{*.js,**/!(__tests__)/*.js}`
   ],

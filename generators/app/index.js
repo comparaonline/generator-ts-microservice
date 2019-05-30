@@ -7,6 +7,14 @@ const yosay = require('yosay');
 const _ = require('lodash');
 const extend = _.merge;
 
+const getOr = (name, def = false) => obj =>
+  obj && obj[name] !== undefined ? obj[name] : def;
+
+const deps = (dev = false) => dev ? 'devDependencies' : 'dependencies';
+const checker = json => (name, dev = false) => _.flow([getOr(deps(dev)), getOr(name)])(json);
+const optionChecker = checker => (options, dev = false) =>
+  (Object.entries(options).find(([k, v]) => checker(k, dev)) || [])[1];
+
 module.exports = class extends Generator {
   initializing() {
     this.props = {};
@@ -15,6 +23,9 @@ module.exports = class extends Generator {
 
   prompting() {
     this.log(yosay(`Let's setup your new ${chalk.red('ComparaOnline')} microservice!`));
+
+    const installed = checker(this.pkg);
+    const options = optionChecker(installed);
     const prompts = [
       {
         name: 'name',
@@ -26,7 +37,7 @@ module.exports = class extends Generator {
         name: 'testFramework',
         message: 'Choose the test framework you want to use',
         type: 'list',
-        default: '../mocha',
+        default: options({ mocha: '../mocha', jest: '../jest' }, true),
         choices: [
           {
             name: 'Mocha + Chai',
@@ -62,22 +73,22 @@ module.exports = class extends Generator {
           {
             name: 'TypeORM',
             value: '../typeorm',
-            checked: (this.pkg.dependencies || {}).typeorm !== undefined
+            checked: installed('typeorm')
           },
           {
-            name: `Sequelize ORM (${chalk.red('We should not using it anymore')})`,
+            name: `Sequelize ORM (${chalk.red('We should not use it anymore')})`,
             value: '../sequelize',
-            checked: (this.pkg.dependencies || {}).sequelize !== undefined
+            checked: installed('sequelize')
           },
           {
             name: 'Event Streamer (Kafka framework)',
             value: '../event-streamer',
-            checked: (this.pkg.dependencies || {})['@comparaonline/event-streamer'] !== undefined
+            checked: installed('@comparaonline/event-streamer')
           },
           {
             name: 'Graphql Server',
             value: '../graphql-server',
-            checked: (this.pkg.dependencies || {}).graphql !== undefined
+            checked: installed('graphql')
           }
         ]
       }

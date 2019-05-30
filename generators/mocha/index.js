@@ -16,7 +16,7 @@ module.exports = class extends Generator {
 
     mkdirp.sync(this.destinationPath('test'));
     this.fs.copyTpl(
-      this.templatePath('mocha.opts'),
+      this.templatePath('mocha.opts.ejs'),
       this.destinationPath('test/mocha.opts'),
       { additional: this._additional() }
     )
@@ -24,44 +24,38 @@ module.exports = class extends Generator {
     this._testInitialization();
   }
 
+  _orms() {
+    return ['sequelize', 'typeorm']
+      .filter(orm => this.options.hasDependency(orm));
+  }
+
   _additional() {
-    const additional = [];
-    if (this.options.hasDependency('sequelize')) {
-      additional.push('--file ./src/test-helpers/sequelize.ts');
-    } else if (this.options.hasDependency('typeorm')) {
-      additional.push('--file ./src/test-helpers/typeorm.ts');
-    }
-    return additional.toString('\n');
+    return ['sequelize', 'typeorm']
+      .filter(orm => this.options.hasDependency(orm))
+      .map(orm => `--file ./src/test-helpers/${orm}.ts`)
+      .join(',\n    ');
   }
 
   _preTest() {
-    const pretest = [];
-    if (this.options.hasDependency('tslint')) {
-      pretest.push('yarn tslint');
-    }
-    if (this.options.hasDependency('sequelize')) {
-      pretest.push('NODE_CONFIG_ENV=test yarn migrate');
-    } else if (this.options.hasDependency('typeorm')) {
-      pretest.push('NODE_CONFIG_ENV=test yarn migrate');
-    }
-    return pretest.join(' && ');
+    return Object.entries({
+      tslint: 'yarn tslint',
+      sequelize: 'NODE_CONFIG_ENV=test yarn migrate',
+      typeorm: 'NODE_CONFIG_ENV=test yarn migrate'
+    })
+      .filter(([k]) => this.options.hasDependency(k))
+      .map(([_, v]) => v)
+      .join(' && ');
   }
 
   _testInitialization() {
-    const additionalParts = [];
-    if (this.options.hasDependency('sequelize')) {
-      mkdirp.sync(this.destinationPath('src/test-helpers'));
-      this.fs.copy(
-        this.templatePath('sequelize.ts'),
-        this.destinationPath('src/test-helpers/sequelize.ts')
-      );
-    } else if (this.options.hasDependency('typeorm')) {
-      mkdirp.sync(this.destinationPath('src/test-helpers'));
-      this.fs.copy(
-        this.templatePath('typeorm.ts'),
-        this.destinationPath('src/test-helpers/typeorm.ts')
-      );
-    }
-    return additionalParts.join('\n')
+    const orms = this._orms();
+    if (orms.length === 0) return;
+    mkdirp.sync(this.destinationPath('src/test-helpers'));
+    orms
+      .map(orm => [`${orm}.ts`, `src/test-helpers/${orm}.ts`])
+      .forEach(([from, to]) => this.fs.copy(
+        this.templatePath(from),
+        this.destinationPath(to)
+      ));
   }
 };

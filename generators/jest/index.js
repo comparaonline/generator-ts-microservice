@@ -1,7 +1,7 @@
 'use strict';
 const Generator = require('yeoman-generator');
 const addScript = require('../../helpers/add-script');
-const extendPackage = require('../../helpers/extend-package');
+const mkdirp = require('mkdirp');
 
 module.exports = class extends Generator {
   static get devDependencies() {
@@ -9,37 +9,50 @@ module.exports = class extends Generator {
   }
   writing() {
     addScript(this, 'test', 'jest');
-    addScript(this, 'coverage', 'jest --coverage --coverageReporters html');
+    addScript(this, 'test:fast', 'jest');
+    addScript(this, 'pretest', this._preTest())
 
-    extendPackage({
-      jest: {
-        forceExit: true,
-        mapCoverage: true,
-        collectCoverageFrom: [
-          'src/**/*.{ts?(x),js?(x)}',
-          '!src/**/*.d.ts',
-          '!src/**/__tests__/**/*.*'
-        ],
-        moduleFileExtensions: [
-          'ts',
-          'tsx',
-          'js'
-        ],
-        setupFiles: [
-          './src/initialization/index.ts'
-        ],
-        testEnvironment: "node",
-        transform: {
-          '\\.(ts|tsx)$': '<rootDir>/node_modules/ts-jest/preprocessor.js'
-        },
-        testRegex: 'src(/.*)?/__tests__/[^/]*\\.(ts|tsx|js)$'
-      }
-    });
+    this.fs.copyTpl(
+      this.templatePath('jest.config.js.ejs'),
+      this.destinationPath('jest.config.js'),
+      { additional: this._additional() }
+    );
 
+    this._testInitialization();
+  }
 
-    this.fs.copy(
-      this.templatePath('docker-compose.test.yml'),
-      this.destinationPath('docker-compose.test.yml')
-    )
+  _orms() {
+    return ['sequelize', 'typeorm']
+      .filter(orm => this.options.hasDependency(orm));
+  }
+
+  _additional() {
+    return ['sequelize', 'typeorm']
+      .filter(orm => this.options.hasDependency(orm))
+      .map(orm => `"./src/test-helpers/${orm}.ts"`)
+      .join(',\n    ');
+  }
+
+  _preTest() {
+    return Object.entries({
+      tslint: 'yarn tslint',
+      sequelize: 'NODE_CONFIG_ENV=test yarn migrate',
+      typeorm: 'NODE_CONFIG_ENV=test yarn migrate'
+    })
+      .filter(([k]) => this.options.hasDependency(k))
+      .map(([_, v]) => v)
+      .join(' && ');
+  }
+
+  _testInitialization() {
+    const orms = this._orms();
+    if (orms.length === 0) return;
+    mkdirp.sync(this.destinationPath('src/test-helpers'));
+    orms
+      .map(orm => [`${orm}.ts`, `src/test-helpers/${orm}.ts`])
+      .forEach(([from, to]) => this.fs.copy(
+        this.templatePath(from),
+        this.destinationPath(to)
+      ));
   }
 };
