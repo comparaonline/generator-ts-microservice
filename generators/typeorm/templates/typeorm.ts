@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import * as config from 'config';
 import { createConnection, getConnection } from 'typeorm';
 import { application } from '../application';

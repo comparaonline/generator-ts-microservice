@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import * as config from 'config';
 import { ApolloServer, gql } from 'apollo-server-express';
 import { app } from '../web-server';

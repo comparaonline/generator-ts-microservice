@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import TraceProxy, { TracerOptions } from 'dd-trace';
 import * as config from 'config';
 import * as opentracing from 'opentracing';
