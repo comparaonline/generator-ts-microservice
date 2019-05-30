@@ -33,12 +33,12 @@ class Application {
     Promise.all(this.shutdownHandlers.map(handler => handler()))
       .then(results => results.forEach(message => console.log(message)))
       .then(() => console.log(`${config.get('appName')} stopped!`))
+      .then(() => process.exit())
       .catch((error: Error) => {
         console.error(error);
         Raven.captureException(error);
-        process.exitCode = 1;
-      })
-      .then(() => process.exit());
+        process.exit(1);
+      });
   }
 }
 
