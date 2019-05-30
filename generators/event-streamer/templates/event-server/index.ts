@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { KafkaServer } from '@comparaonline/event-streamer';
 import * as config from 'config';
 import * as Raven from 'raven';

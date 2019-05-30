@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import * as Raven from 'raven';
 import * as config from 'config';
 

@@ -33,8 +33,8 @@ module.exports = class extends Generator {
       this.templatePath('docker-compose.yml')
     );
 
-    mkdirp.sync('src/event-server/actions/__tests__');
-    mkdirp.sync('src/event-server/events');
+    mkdirp.sync(this.destinationPath('src/event-server/actions/__tests__'));
+    mkdirp.sync(this.destinationPath('src/event-server/events'));
     this.fs.copy(
       this.templatePath('event-server/actions/ping-action.ts'),
       this.destinationPath('src/event-server/actions/ping-action.ts')
@@ -79,15 +79,9 @@ module.exports = class extends Generator {
     }
     return additionalParts.join('\n')
   }
-
   _testFramework() {
-    if (this.options.hasDependency('mocha')) {
-      return 'mocha';
-    } else if (this.options.hasDependency('jest')) {
-      return 'jest';
-    } else {
-      throw new Error('No test framework defined');
-    }
+    return ['mocha', 'jest'].find(fw => this.options.hasDependency(fw))
+      || fail('No test framework defined');
   }
 
   _removeOldVersions() {

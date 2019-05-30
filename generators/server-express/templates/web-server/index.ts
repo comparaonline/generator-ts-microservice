@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import * as express from 'express';
 import * as logger from 'morgan';
 import * as config from 'config';
