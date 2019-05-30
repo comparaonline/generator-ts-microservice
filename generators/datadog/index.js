@@ -43,7 +43,7 @@ module.exports = class extends Generator {
         name: 'projectName',
         message: 'Datadog Project Name (only use default if this app is cross business unit)',
         type: 'list',
-        default: this.defaultProjectName,
+        default: this.originalConfig.datadog.projectName,
         choices: [
           {
             name: 'Travel Assistance',
@@ -91,6 +91,7 @@ module.exports = class extends Generator {
 
   _extendConfig() {
     const defaultConfig = merge(
+      this.fs.readJSON(this.destinationPath('config/default.json'), {}),
       {
         datadog: {
           projectName: this.props.projectName,
@@ -99,18 +100,17 @@ module.exports = class extends Generator {
         winston: {
           format: 'simple'
         }
-      },
-      this.fs.readJSON(this.destinationPath('config/default.json'), {})
+      }
     );
     this.fs.writeJSON(this.destinationPath('config/default.json'), defaultConfig);
 
     const productionConfig = merge(
+      this.fs.readJSON(this.destinationPath('config/production.json'), {}),
       {
         winston: {
           format: 'json'
         }
-      },
-      this.fs.readJSON(this.destinationPath('config/production.json'), {})
+      }
     );
     this.fs.writeJSON(this.destinationPath('config/production.json'), productionConfig);
   }
