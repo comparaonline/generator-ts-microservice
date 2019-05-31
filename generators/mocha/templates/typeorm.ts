@@ -14,11 +14,9 @@ const clearDb = async () => {
   }
 };
 
-beforeAll(async () => await connection());
-
 beforeEach(async () => {
+  await connection;
   await clearDb();
 });
 
-afterAll(async () => await getConnection().close());
-
+afterAll(() => getConnection().close());
