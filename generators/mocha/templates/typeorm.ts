@@ -19,4 +19,4 @@ beforeEach(async () => {
   await clearDb();
 });
 
-afterAll(() => getConnection().close());
+after(() => getConnection().close());
