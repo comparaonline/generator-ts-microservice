@@ -16,4 +16,5 @@ export const connection = async () => createConnection({
     'build/migrations/*.js'
   ]
 });
+application.onStart(() => connection());
 application.onShutdown(() => getConnection().close());
