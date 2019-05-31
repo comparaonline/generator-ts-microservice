@@ -113,7 +113,7 @@ module.exports = class extends Generator {
           username: "user",
           password: "pass",
           database: this.options.name,
-          host: "postgres",
+          host: "localhost",
           dialect: "postgresql",
           type: "postgres",
           port: 5432

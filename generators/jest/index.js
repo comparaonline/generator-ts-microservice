@@ -8,8 +8,9 @@ module.exports = class extends Generator {
     return ['jest', '@types/jest', 'ts-jest'];
   }
   writing() {
-    addScript(this, 'test', 'jest');
-    addScript(this, 'test:fast', 'jest');
+    const envs = 'NODE_CONFIG_ENV=test jest';
+    addScript(this, 'test', envs);
+    addScript(this, 'test:fast', envs);
     addScript(this, 'pretest', this._preTest())
 
     this.fs.copyTpl(

@@ -4,7 +4,7 @@ import { createConnection, getConnection } from 'typeorm';
 import { application } from '../application';
 
 const orm = config.get<object>('orm');
-export const connection = createConnection({
+export const connection = async () => createConnection({
   ...orm,
   type: orm['type'],
   entities: [
@@ -16,4 +16,5 @@ export const connection = createConnection({
     'build/migrations/*.js'
   ]
 });
+application.onStart(() => connection());
 application.onShutdown(() => getConnection().close());
