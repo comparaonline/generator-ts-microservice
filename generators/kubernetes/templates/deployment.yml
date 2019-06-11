@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: <%= microserviceName %>-deployment
 spec:
-  replicas: 2
   strategy:
     rollingUpdate:
       maxSurge: 100%
@@ -25,13 +24,6 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 4000
-        resources:
-          limits:
-            cpu: 1000m
-            memory: 512Mi
-          requests:
-            cpu: 100m
-            memory: 128Mi
         livenessProbe:
           httpGet:
             path: /<%= microserviceName %>/healthcheck
