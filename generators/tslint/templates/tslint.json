@@ -13,9 +13,19 @@
         "singleline": "never"
       }
     ],
-    "variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case",
-      "allow-leading-underscore"],
-    "whitespace": [true, "check-separator"],
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-pascal-case",
+      "allow-leading-underscore"
+    ],
+    "whitespace": [
+      true,
+      "check-separator",
+      "check-branch",
+      "check-type"
+    ],
     "member-ordering": [true, {"order": "fields-first"}],
     "no-magic-numbers": true,
     "no-eval": true,
@@ -34,7 +44,14 @@
     "new-parens": true,
     "no-consecutive-blank-lines": true,
     "quotemark": [true, "single"],
-    "no-floating-promises": true
+    "no-floating-promises": true,
+    "align": {
+      "options": [
+        "statements",
+        "members",
+        "elements"
+      ]
+    }
   },
   "linterOptions": {
     "exclude": [
