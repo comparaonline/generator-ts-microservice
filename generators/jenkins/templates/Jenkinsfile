@@ -78,6 +78,9 @@ def initialize_function() {
   env.DOCKER_COMPOSE_FILENAME = "docker-compose.yml"
   env.DOCKER_NETWORK_NAME = "confluent_kafka"
   env.TEST_COMMAND = "yarn test"
+  env.VERSION_TAG = env.BRANCH_NAME + '_' + env.BUILD_NUMBER
+  env.KUBECTL_PATH = "/home/jenkins/google-cloud-sdk/bin/kubectl"
+  env.GCLOUD_PATH = "/home/jenkins/google-cloud-sdk/bin/gcloud"
 
   acceptance_message = "Accept changes and deploy: ${env.APP_NAME}:${env.BRANCH_NAME} ${env.BUILD_NUMBER} Go to: ${env.BUILD_URL}"
   input_message = "Accept changes and deploy to ${env.DESTINATION_ENVIRONMENT}?"
@@ -103,7 +106,7 @@ def build_function() {
 }
 
 def deploy_function() {
-  sh "STAGE=$STAGE deploy -k /home/jenkins/google-cloud-sdk/bin/kubectl -g /home/jenkins/google-cloud-sdk/bin/gcloud $APP_NAME"
+  sh "STAGE=$STAGE deploy -k $KUBECTL_PATH -g $GLOUD_PATH -v $VERSION_TAG $APP_NAME"
 }
 
 def accept_release_function() {
