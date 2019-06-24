@@ -108,7 +108,7 @@ module.exports = class extends Generator {
       this.fs.readJSON(this.destinationPath('config/production.json'), {}),
       {
         winston: {
-          format: 'json'
+          format: 'default'
         }
       }
     );
