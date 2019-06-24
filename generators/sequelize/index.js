@@ -93,7 +93,7 @@ module.exports = class extends Generator {
     const migrate = 'yarn migrate';
 
     addScript(this, 'migrate', 'sequelize db:migrate');
-    addScript(this, 'premigrate', 'bin/createdb');
+    addScript(this, 'premigrate', "stat bin/createdb >/dev/null 2>&1 && bin/createdb || echo 'skip createdb'");
     addScript(this, 'sequelize', 'sequelize');
     addScript(this, 'prestart', migrate);
     addScript(this, 'prestart:dev', migrate);

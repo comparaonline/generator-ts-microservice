@@ -100,7 +100,7 @@ module.exports = class extends Generator {
     const migrate = 'yarn migrate';
 
     addScript(this, 'migrate', 'typeorm migration:run');
-    addScript(this, 'premigrate', 'bin/createdb');
+    addScript(this, 'premigrate', "stat bin/createdb >/dev/null 2>&1 && bin/createdb || echo 'skip createdb'");
     addScript(this, 'typeorm', 'node -r ts-node/register ./node_modules/.bin/typeorm');
     addScript(this, 'prestart', migrate);
     addScript(this, 'prestart:dev', migrate);
