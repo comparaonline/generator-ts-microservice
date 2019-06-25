@@ -45,9 +45,11 @@ module.exports = class extends Generator {
       dependencies: ['bash', 'make', 'g++', 'python'],
       base: [],
       files: [],
-      folders: []
+      folders: [],
+      typeOrmLines: []
     };
     this._addSequelize(options);
+    this._addTypeorm(options);
     this._addEventStreamer(options);
     return options;
   }
@@ -56,6 +58,12 @@ module.exports = class extends Generator {
     if (this.options.hasDependency('sequelize')) {
       options.folders = (options.folders || []).concat(['migrations']);
       options.files = (options.files || []).concat(['.sequelizerc']);
+    }
+  }
+
+  _addTypeorm(options) {
+    if (this.options.hasDependency('typeorm')) {
+      options.typeOrmLines = (options.typeOrmLines || []).concat(['COPY ormconfig.prod.js ./ormconfig.js']);
     }
   }
 
