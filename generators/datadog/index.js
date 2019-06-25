@@ -31,7 +31,8 @@ module.exports = class extends Generator {
           projectName: this.defaultProjectName
         },
         winston: {
-          format: 'simple'
+          format: 'simple',
+          level: 'info'
         }
       }
     );

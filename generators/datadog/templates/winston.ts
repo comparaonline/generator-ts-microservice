@@ -18,6 +18,7 @@ const formats = {
 const getFormat = formats[getConfig('winston.format', 'default')];
 
 export const loggerConfig: LoggerOptions = {
+  level: config.get('winston.level'),
   format: getFormat(),
   transports: [
     new transports.Console()
