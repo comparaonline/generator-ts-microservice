@@ -46,10 +46,10 @@ module.exports = class extends Generator {
       base: [],
       files: [],
       folders: [],
-      typeOrmLines: []
+      lastCopies: []
     };
     this._addSequelize(options);
-    this._addTypeorm(options);
+    this._addTypeOrm(options);
     this._addEventStreamer(options);
     return options;
   }
@@ -61,9 +61,9 @@ module.exports = class extends Generator {
     }
   }
 
-  _addTypeorm(options) {
+  _addTypeOrm(options) {
     if (this.options.hasDependency('typeorm')) {
-      options.typeOrmLines = (options.typeOrmLines || []).concat(['COPY ormconfig.prod.js ./ormconfig.js']);
+      options.lastCopies.push(['ormconfig.prod.js', 'ormconfig.js']);
     }
   }
 

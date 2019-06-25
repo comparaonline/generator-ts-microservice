@@ -22,5 +22,5 @@ LABEL Name="ComparaOnline <%= microserviceName %>" Version="2.0"
 ARG ENVIRONMENT="production"
 ENV NODE_ENV=${ENVIRONMENT}
 COPY --from=clean /code ./
-<%= [...new Set(typeOrmLines)].join('\n') %>
+<%= [...new Set(lastCopies)].map(([a, b]) => `COPY ${a} ./${b}`).join('\n') %>
 CMD ["yarn", "start"]
