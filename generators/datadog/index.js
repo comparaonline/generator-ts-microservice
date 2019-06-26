@@ -31,7 +31,8 @@ module.exports = class extends Generator {
           projectName: this.defaultProjectName
         },
         winston: {
-          format: 'simple'
+          format: 'simple',
+          level: 'info'
         }
       }
     );
@@ -108,7 +109,7 @@ module.exports = class extends Generator {
       this.fs.readJSON(this.destinationPath('config/production.json'), {}),
       {
         winston: {
-          format: 'json'
+          format: 'default'
         }
       }
     );
