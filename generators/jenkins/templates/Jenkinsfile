@@ -106,7 +106,7 @@ def build_function() {
 }
 
 def deploy_function() {
-  sh "STAGE=$STAGE deploy -k $KUBECTL_PATH -g $GLOUD_PATH -v $VERSION_TAG $APP_NAME"
+  sh "STAGE=$STAGE deploy -k $KUBECTL_PATH -g $GCLOUD_PATH -v $VERSION_TAG $APP_NAME"
 }
 
 def accept_release_function() {
