@@ -21,6 +21,11 @@ spec:
           value: ${STAGE}
         - name: NODE_CONFIG_ENV
           value: ${STAGE}
+        - name: DD_AGENT_HOST
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.hostIP
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 4000
