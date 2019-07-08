@@ -2,21 +2,22 @@ import { getConnection } from 'typeorm';
 import { connection } from '../initialization/typeorm';
 
 const clearDb = async () => {
-  try{
+  try {
     const conn = getConnection();
     const entities = conn.entityMetadatas;
-    for(const entity of entities) {
+    for (const entity of entities) {
       const repository = await conn.getRepository(entity.name);
       await repository.query(`TRUNCATE TABLE "${entity.tableName}" CASCADE;`);
     }
-  } catch(error) {
+  } catch (error) {
     console.error(error);
   }
 };
 
+before(async () => await connection());
+
 beforeEach(async () => {
-  await connection;
   await clearDb();
 });
 
-after(() => getConnection().close());
+after(async () => await getConnection().close());
