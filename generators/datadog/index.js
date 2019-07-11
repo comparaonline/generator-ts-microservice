@@ -105,6 +105,16 @@ module.exports = class extends Generator {
     );
     this.fs.writeJSON(this.destinationPath('config/default.json'), defaultConfig);
 
+    const stagingConfig = merge(
+      this.fs.readJSON(this.destinationPath('config/staging.json'), {}),
+      {
+        winston: {
+          format: 'default'
+        }
+      }
+    );
+    this.fs.writeJSON(this.destinationPath('config/staging.json'), stagingConfig);
+
     const productionConfig = merge(
       this.fs.readJSON(this.destinationPath('config/production.json'), {}),
       {
