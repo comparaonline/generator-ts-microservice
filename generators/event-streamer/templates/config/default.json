@@ -7,7 +7,11 @@
       "groupId": "kafka_topic",
       "topics": [
         "kafka_topic"
-      ]
+      ],
+      "backpressure": {
+        "pause": 10,
+        "resume": 5
+      }
     },
     "producer": {
       "defaultTopic": "kafka_topic"
