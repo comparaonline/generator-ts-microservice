@@ -7,7 +7,7 @@ import resolvers from './resolvers';
 
 const path = `${config.get('server.baseUrl')}/graphql`;
 
-const typeDefs = gql(schema.join());
+const typeDefs = gql(schema.join(''));
 const serverOptions = {
   typeDefs,
   resolvers,
