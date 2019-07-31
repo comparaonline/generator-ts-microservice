@@ -99,7 +99,8 @@ module.exports = class extends Generator {
           host: 'datadog'
         },
         winston: {
-          format: 'simple'
+          format: 'simple',
+          level: 'info'
         }
       }
     );
