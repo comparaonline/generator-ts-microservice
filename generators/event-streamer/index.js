@@ -62,7 +62,7 @@ module.exports = class extends Generator {
     if (this._useJest()) {
       mkdirp.sync(this.destinationPath('src/event-server/__mocks__'));
       this.fs.copy(
-        this.templatePath(`event-server/__mocks__/index.ts`),
+        this.templatePath('__mocks__/index.ts'),
         this.destinationPath('src/event-server/__mocks__/index.ts')
       );
     }
