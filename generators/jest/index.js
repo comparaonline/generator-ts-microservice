@@ -46,11 +46,14 @@ module.exports = class extends Generator {
   }
 
   _testInitialization() {
-    const orms = this._orms();
-    if (orms.length === 0) return;
+    const helpers = this._orms();
+    if (this.options.hasDependency('event-streamer')) {
+      helpers.push('test-server');
+    }
+    if (helpers.length === 0) return;
     mkdirp.sync(this.destinationPath('src/test-helpers'));
-    orms
-      .map(orm => [`${orm}.ts`, `src/test-helpers/${orm}.ts`])
+    helpers
+      .map(helper => [`${helper}.ts`, `src/test-helpers/${helper}.ts`])
       .forEach(([from, to]) => this.fs.copy(
         this.templatePath(from),
         this.destinationPath(to)

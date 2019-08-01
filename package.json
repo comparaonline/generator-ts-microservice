@@ -1,6 +1,6 @@
 {
   "name": "generator-ts-microservice",
-  "version": "8.5.1",
+  "version": "8.6.0",
   "description": "This bootstrap a microservice to run on the ComparaOnline infrastructure",
   "homepage": "https://github.com/comparaonline/generator-ts-microservice",
   "author": {
