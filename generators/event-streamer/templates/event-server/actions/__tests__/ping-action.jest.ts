@@ -1,12 +1,11 @@
-import { TestServer } from '@comparaonline/event-streamer';
-import { router } from '../../router';
+import { testServer } from '../../../test-helpers/test-server';
 import { Pong } from '../../events/ping-events';
+jest.mock('../../../event-server');
 
 describe('PingAction', () => {
   it('returns consumer data when pinged', async () => {
-    const server = new TestServer(router);
-    await server.input({ code: 'Ping' });
-    const published = server.emitted();
+    await testServer.input({ code: 'Ping' });
+    const published = testServer.emitted();
     expect(published).toHaveLength(1);
     expect(published[0]).toBeInstanceOf(Pong);
     const publishedData = JSON.parse(published[0].toString());

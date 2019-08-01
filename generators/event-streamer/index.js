@@ -12,7 +12,7 @@ module.exports = class extends Generator {
   }
 
   static get dependencies() {
-    return ['@comparaonline/event-streamer@^3.1.0'];
+    return ['@comparaonline/event-streamer@^3.4.0'];
   }
 
   constructor(args, options) {
@@ -59,6 +59,13 @@ module.exports = class extends Generator {
     } catch (e) {
       this.log.error(`Error!!! ${e.message}`);
     }
+    if (this._useJest()) {
+      mkdirp.sync(this.destinationPath('src/event-server/__mocks__'));
+      this.fs.copy(
+        this.templatePath(`event-server/__mocks__/index.ts`),
+        this.destinationPath('src/event-server/__mocks__/index.ts')
+      );
+    }
     this._removeOldVersions();
   }
 
@@ -82,6 +89,10 @@ module.exports = class extends Generator {
   _testFramework() {
     return ['mocha', 'jest'].find(fw => this.options.hasDependency(fw))
       || fail('No test framework defined');
+  }
+
+  _useJest() {
+    return this.options.hasDependency('jest');
   }
 
   _removeOldVersions() {
