@@ -1,4 +1,4 @@
 /* istanbul ignore file */
-const types:string[] = [];
+const types: string[] = [];
 
 export default types.concat();
