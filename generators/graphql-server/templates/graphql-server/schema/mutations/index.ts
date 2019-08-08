@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 import test from './test';
 
-const queries:string[] = [];
+const queries: string[] = [];
 
 const allQueries: string = queries.concat(
   test

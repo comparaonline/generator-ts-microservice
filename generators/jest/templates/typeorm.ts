@@ -5,11 +5,11 @@ const clearDb = async () => {
   try{
     const conn = getConnection();
     const entities = conn.entityMetadatas;
-    for(const entity of entities) {
+    for (const entity of entities) {
       const repository = await conn.getRepository(entity.name);
       await repository.query(`TRUNCATE TABLE "${entity.tableName}" CASCADE;`);
     }
-  } catch(error) {
+  } catch (error) {
     console.error(error);
   }
 };
