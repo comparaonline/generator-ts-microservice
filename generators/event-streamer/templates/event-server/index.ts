@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-import { KafkaServer } from '@comparaonline/event-streamer';
+import { KafkaServer, KafkaInputEvent } from '@comparaonline/event-streamer';
 import * as config from 'config';
 import * as Raven from 'raven';
 import { router } from './router';
@@ -14,10 +14,11 @@ export const kafkaServer = new KafkaServer(router, config.get('kafka'), {
 
 application.onStart(() => {
   kafkaServer.start();
-  kafkaServer.on('error', (error) => {
+  kafkaServer.on('error', (error, event?: KafkaInputEvent) => {
     console.error(error);
-    Raven.captureException(error);
-    application.shutdown();
+    Raven.captureException(error, { extra: { event } }, () => {
+      application.shutdown();
+    });
   });
 });
 
