@@ -1,7 +1,7 @@
 pipeline {
   agent any
   options {
-    timeout(time: 1, unit: "HOURS")
+    timeout(time: 15, unit: "MINUTES")
   }
   stages {
     stage("Initialize") {
@@ -43,6 +43,7 @@ pipeline {
         }
       }
       steps {
+        initialize_function()
         accept_release_function()
       }
     }
@@ -72,7 +73,7 @@ def initialize_function() {
   else if(env.BRANCH_NAME == "master") {
     env.STAGE = "production"
   }
-  
+
   env.APP_NAME = "<%= microserviceName %>"
   env.DOCKER_SERVICE_NAME = "app"
   env.DOCKER_COMPOSE_FILENAME = "docker-compose.yml"
