@@ -80,8 +80,8 @@ def initialize_function() {
   env.DOCKER_NETWORK_NAME = "confluent_kafka"
   env.TEST_COMMAND = "yarn test"
   env.VERSION_TAG = env.BRANCH_NAME + '_' + env.BUILD_NUMBER
-  env.KUBECTL_PATH = "/home/jenkins/google-cloud-sdk/bin/kubectl"
-  env.GCLOUD_PATH = "/home/jenkins/google-cloud-sdk/bin/gcloud"
+  env.KUBECTL_PATH = "/snap/bin/kubectl"
+  env.GCLOUD_PATH = "/snap/bin/gcloud"
 
   acceptance_message = "Accept changes and deploy: ${env.APP_NAME}:${env.BRANCH_NAME} ${env.BUILD_NUMBER} Go to: ${env.BUILD_URL}"
   input_message = "Accept changes and deploy to ${env.DESTINATION_ENVIRONMENT}?"
