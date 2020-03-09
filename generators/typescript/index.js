@@ -27,6 +27,6 @@ module.exports = class extends Generator {
     addScript(this, 'compile', 'tsc');
     addScript(this, 'clean', 'rm -rf build/*');
     addScript(this, 'start', 'node build');
-    addScript(this, 'start:dev', 'TS_NODE_FILES=true node --inspect=9000 -r ts-node/register src/index.ts');
+    addScript(this, 'start:dev', 'TS_NODE_FILES=true node --inspect=0.0.0.0:9000 -r ts-node/register src/index.ts');
   }
 };
