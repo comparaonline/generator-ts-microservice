@@ -1,5 +1,5 @@
 pipeline {
-  agent any
+  agent { node { label 'master' } }
   stages {
     stage('Publish') {
       when {

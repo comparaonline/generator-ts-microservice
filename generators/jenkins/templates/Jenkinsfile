@@ -1,7 +1,10 @@
 pipeline {
-  agent { node { label 'jenkins-gcp' } }
+  agent any
   options {
     timeout(time: 15, unit: "MINUTES")
+  }
+  environment {
+    CHARTMUSEUM_PASSWORD = credentials('chartmuseum-password')
   }
   stages {
     stage("Initialize") {
@@ -9,20 +12,14 @@ pipeline {
         initialize_function()
       }
     }
+    stage("Build") {
+      steps {
+        build_function()
+      }
+    }
     stage("Test") {
       steps {
         test_function()
-      }
-    }
-    stage("Build") {
-      when {
-        anyOf {
-          branch "release"
-          branch "master"
-        }
-      }
-      steps {
-        build_function()
       }
     }
     stage("Deploy") {
@@ -33,7 +30,7 @@ pipeline {
         }
       }
       steps {
-        deploy_function()
+        deploy_helm()
       }
     }
     stage("Accept Release") {
@@ -66,12 +63,14 @@ pipeline {
 def initialize_function() {
   // - PLEASE ONLY MODIFY VALUES IN THIS FUNCTION!!!
   if(env.BRANCH_NAME == "release") {
-      env.STAGE = "staging"
-      env.DESTINATION_BRANCH = "master"
-      env.DESTINATION_ENVIRONMENT = "PRODUCTION"
+    env.STAGE = "staging"
+    env.DESTINATION_BRANCH = "master"
+    env.DESTINATION_ENVIRONMENT = "PRODUCTION"
+    env.KUBE_NAMESPACE = "staging"
   }
   else if(env.BRANCH_NAME == "master") {
     env.STAGE = "production"
+    env.KUBE_NAMESPACE = "default"
   }
 
   env.APP_NAME = "<%= microserviceName %>"
@@ -82,6 +81,7 @@ def initialize_function() {
   env.VERSION_TAG = env.BRANCH_NAME + '_' + env.BUILD_NUMBER
   env.KUBECTL_PATH = "/snap/bin/kubectl"
   env.GCLOUD_PATH = "/snap/bin/gcloud"
+  helm_init()
 
   acceptance_message = "Accept changes and deploy: ${env.APP_NAME}:${env.BRANCH_NAME} ${env.BUILD_NUMBER} Go to: ${env.BUILD_URL}"
   input_message = "Accept changes and deploy to ${env.DESTINATION_ENVIRONMENT}?"
@@ -106,8 +106,18 @@ def build_function() {
   sh "docker-compose -f $DOCKER_COMPOSE_FILENAME build"
 }
 
-def deploy_function() {
-  sh "STAGE=$STAGE deploy -k $KUBECTL_PATH -g $GCLOUD_PATH -v $VERSION_TAG $APP_NAME"
+def deploy_helm() {
+  sh "docker build -t ${DOCKER_IMAGE} ."
+  sh "${GCLOUD_PATH} docker -- push ${DOCKER_IMAGE}"
+  sh "helm upgrade -i ${APP_NAME} ${HELM_REPO_NAME}/${APP_NAME} --namespace ${KUBE_NAMESPACE} --set app_environment=${STAGE} --set image.tag=${VERSION_TAG} --wait --debug"
+}
+
+def helm_init() {
+  env.HELM_REPO_NAME = "co-chartmuseum"
+  env.HELM_REPO_USERNAME = "compara-helm"
+  env.DOCKER_IMAGE = "gcr.io/co-gcp/${APP_NAME}:${VERSION_TAG}"
+  sh "helm repo add ${HELM_REPO_NAME} https://helmcharts.comparaonline.com --username ${HELM_REPO_USERNAME} --password \"${CHARTMUSEUM_PASSWORD}\""
+  sh "helm repo update"
 }
 
 def accept_release_function() {

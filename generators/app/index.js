@@ -124,7 +124,6 @@ module.exports = class extends Generator {
       '../node-config',
       '../server-express',
       '../docker',
-      '../kubernetes',
       '../raven',
       '../datadog',
       'generator-node/generators/editorconfig',
